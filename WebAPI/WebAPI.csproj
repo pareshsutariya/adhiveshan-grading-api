@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>AdhiveshanGrading.WebAPI</RootNamespace>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+
+    <Nullable>enable</Nullable>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Generate ready to run images during publishing to improve cold start time. -->
+    <PublishReadyToRun>true</PublishReadyToRun>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'AdhiveshanGrading' " />
+  <ItemGroup>
+    <None Remove="MongoDB.Driver" />
+    <None Remove="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.415.18" />
+    <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
+      <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
+      <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.4.0" />
+      <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
+  </ItemGroup>
+  
+  <ItemGroup> 
+    <Content Include="Images\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdhiveshanGrading\AdhiveshanGrading.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference> 
+  </ItemGroup>
+</Project>
+
