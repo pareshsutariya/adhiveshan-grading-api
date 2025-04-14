@@ -8,6 +8,8 @@ public class AdvGradingSettings : IAdvGradingSettings
 
     public string DatabaseName { get; set; } = null!;
 
+    public string ParticipantsCollectionName { get; set; }
+
     public string UsersCollectionName { get; set; } = null!;
     public string ConfigurationsCollectionName { get; set; } = null!;
 }
@@ -18,6 +20,7 @@ public interface IAdvGradingSettings
 
     string DatabaseName { get; set; }
 
+    string ParticipantsCollectionName { get; set; }
     string UsersCollectionName { get; set; }
     string ConfigurationsCollectionName { get; set; }
 }
