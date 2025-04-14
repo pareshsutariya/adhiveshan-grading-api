@@ -26,7 +26,9 @@ public class ParticipantModel : ModelBase
     public string Vyaktigat_Kirtan_Gaan { get; set; }
     public string Vyaktigat_Kirtan_Gaan_Category { get; set; }
     public string Gender { get; set; }
+    public int? MISId { get; set; }
 
+    /*
     public int? MISId
     {
         get
@@ -47,6 +49,7 @@ public class ParticipantModel : ModelBase
             return misId;
         }
     }
+    */
 
     public string FullName
     {

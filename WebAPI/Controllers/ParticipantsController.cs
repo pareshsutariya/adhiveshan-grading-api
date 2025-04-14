@@ -21,6 +21,12 @@ public class ParticipantsController : ControllerBase
     [HttpGet("{center}/{mandal}")]
     public async Task<List<ParticipantModel>> Get(string center = "", string mandal = "") => await _service.Get(center, mandal);
 
+    [HttpGet("getById/{id}")]
+    public async Task<ParticipantModel> GetById(int id) => await _service.GetById(id);
+
+    [HttpGet("getByMISId/{misId}")]
+    public async Task<ParticipantModel> GetByMISId(int misId) => await _service.GetByMISId(misId);
+
     [HttpPost("import")]
     public async Task<ActionResult<List<ParticipantModel>>> Import(List<ParticipantModel> models)
     {

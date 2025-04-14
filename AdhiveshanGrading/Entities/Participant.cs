@@ -24,6 +24,9 @@ public class Participant : MongoDBEntity
     public string FirstLastName_MISID { get; set; }
 
     [BsonIgnoreIfNull]
+    public int? MISId { get; set; }
+
+    [BsonIgnoreIfNull]
     public string SkilledCompetitions { get; set; }
 
     [BsonIgnoreIfNull]

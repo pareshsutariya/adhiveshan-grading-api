@@ -12,7 +12,9 @@ namespace AdhiveshanGrading.Services;
 
 public interface IParticipantsService
 {
-    Task<List<ParticipantModel>> Get(string center = "", string mandal = "");
+    Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
+    Task<ParticipantModel> GetByMISId(int misId);
+    Task<ParticipantModel> GetById(int id);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -25,9 +27,24 @@ public class ParticipantsService : BaseService, IParticipantsService
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
     }
 
-    public async Task<List<ParticipantModel>> Get(string center = "", string mandal = "")
+    public async Task<ParticipantModel> GetById(int id)
     {
-        var entities = await _participantsCollection.Find(item => (center == "" || item.Center == center) && (mandal == "" || item.Mandal == mandal)).ToListAsync();
+        var entity = await _participantsCollection.Find(item => item.ParticipantId == id).FirstOrDefaultAsync();
+
+        return entity?.Map<ParticipantModel>(mapper);
+    }
+
+
+    public async Task<ParticipantModel> GetByMISId(int misId)
+    {
+        var entity = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
+
+        return entity?.Map<ParticipantModel>(mapper);
+    }
+
+    public async Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "")
+    {
+        var entities = await _participantsCollection.Find(item => (region == "" || item.Region == region) && (center == "" || item.Center == center) && (mandal == "" || item.Mandal == mandal)).ToListAsync();
 
         var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
                             .OrderBy(c => c.Gender)
