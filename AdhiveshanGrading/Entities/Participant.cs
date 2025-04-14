@@ -9,6 +9,9 @@ public class Participant : MongoDBEntity
     public int ParticipantId { get; set; }
 
     [BsonIgnoreIfNull]
+    public string Region { get; set; }
+
+    [BsonIgnoreIfNull]
     public string Center { get; set; }
 
     [BsonIgnoreIfNull]

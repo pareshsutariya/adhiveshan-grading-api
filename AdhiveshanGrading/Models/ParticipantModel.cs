@@ -6,6 +6,7 @@ namespace AdhiveshanGrading.Models;
 public class ParticipantModel : ModelBase
 {
     public int ParticipantId { get; set; }
+    public string Region { get; set; }
     public string Center { get; set; }
     public string Zone { get; set; }
     public string Mandal { get; set; }
@@ -25,6 +26,27 @@ public class ParticipantModel : ModelBase
     public string Vyaktigat_Kirtan_Gaan { get; set; }
     public string Vyaktigat_Kirtan_Gaan_Category { get; set; }
     public string Gender { get; set; }
+
+    public int? MISId
+    {
+        get
+        {
+            int? misId = null;
+
+            if (string.IsNullOrEmpty(FirstLastName_MISID))
+                return misId;
+
+            if (FirstLastName_MISID.IndexOf("-") >= 0)
+            {
+                int tmp;
+
+                if (int.TryParse(FirstLastName_MISID.Split(new[] { '-' })[0].Trim(), out tmp))
+                    misId = tmp;
+            }
+
+            return misId;
+        }
+    }
 
     public string FullName
     {
