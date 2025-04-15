@@ -47,7 +47,7 @@ public class ParticipantsService : BaseService, IParticipantsService
     public async Task<List<ParticipantModel>> Import(List<ParticipantModel> models)
     {
         var gender = models.Where(m => !string.IsNullOrWhiteSpace(m.Gender)).FirstOrDefault().Gender;
-        var regional = models.Where(m => !string.IsNullOrWhiteSpace(m.Region)).FirstOrDefault().Region;
+        var region = models.Where(m => !string.IsNullOrWhiteSpace(m.Region)).FirstOrDefault().Region;
         _participantsCollection.DeleteMany(c => c.Gender == gender && c.Region == region);
 
         foreach (var model in models)
