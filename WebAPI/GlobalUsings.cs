@@ -7,4 +7,4 @@ global using AutoMapper;
 
 global using AdhiveshanGrading.Models;
 global using AdhiveshanGrading.Services;
-
+global using AdhiveshanGrading.Settings;

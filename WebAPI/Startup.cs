@@ -24,10 +24,11 @@ public class Startup
         services.AddAutoMapper(typeof(Startup));
 
         // Adhiveshan
-        services.AddSingleton<AdhiveshanGrading.Settings.IAdvGradingSettings>(sp => sp.GetRequiredService<IOptions<AdhiveshanGrading.Settings.AdvGradingSettings>>().Value);
-        services.Configure<AdhiveshanGrading.Settings.AdvGradingSettings>(Configuration.GetSection(nameof(AdhiveshanGrading.Settings.AdvGradingSettings)));
-        services.AddSingleton<AdhiveshanGrading.Services.IUsersService, AdhiveshanGrading.Services.UsersService>();
-        services.AddSingleton<AdhiveshanGrading.Services.ConfigurationsService>();
+        services.AddSingleton<IAdvGradingSettings>(sp => sp.GetRequiredService<IOptions<AdvGradingSettings>>().Value);
+        services.Configure<AdvGradingSettings>(Configuration.GetSection(nameof(AdvGradingSettings)));
+        services.AddSingleton<IUsersService, UsersService>();
+        services.AddSingleton<IParticipantsService, ParticipantsService>();
+        services.AddSingleton<ConfigurationsService>();
 
         services.AddCors();
         services.AddControllers();
