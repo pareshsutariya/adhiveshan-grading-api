@@ -1,6 +1,3 @@
-using System;
-using System.Text.Json.Serialization;
-
 namespace AdhiveshanGrading.Models;
 
 public class ParticipantModel : ModelBase

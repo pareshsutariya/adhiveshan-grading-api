@@ -1,10 +1,3 @@
-using System;
-using MongoDB.Bson;
-using MongoDB;
-using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AdhiveshanGrading.Models;
 
 public class ConfigurationModel : ModelBase

@@ -32,12 +32,6 @@
       <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
   </ItemGroup>
   
-  <ItemGroup> 
-    <Content Include="Images\**"> 
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </Content> 
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\AdhiveshanGrading\AdhiveshanGrading.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>

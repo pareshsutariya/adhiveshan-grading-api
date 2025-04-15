@@ -1,7 +1,3 @@
-using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace AdhiveshanGrading.Entities;
 
 public class Participant : MongoDBEntity

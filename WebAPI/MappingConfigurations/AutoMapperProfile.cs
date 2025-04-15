@@ -1,7 +1,3 @@
-using System;
-using AutoMapper;
-
-
 namespace AdhiveshanGrading.WebAPI;
 
 public class AutoMapperProfile : Profile
@@ -9,11 +5,11 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         // Adhiveshan
-        CreateMap<AdhiveshanGrading.Entities.User, AdhiveshanGrading.Models.UserModel>().ReverseMap();
-        CreateMap<AdhiveshanGrading.Entities.User, AdhiveshanGrading.Models.UserCreateModel>().ReverseMap();
-        CreateMap<AdhiveshanGrading.Entities.User, AdhiveshanGrading.Models.UserUpdateModel>().ReverseMap();
-        CreateMap<AdhiveshanGrading.Entities.Configuration, AdhiveshanGrading.Models.ConfigurationModel>().ReverseMap();
-        CreateMap<AdhiveshanGrading.Entities.Configuration, AdhiveshanGrading.Models.ConfigurationCreateModel>().ReverseMap();
-        CreateMap<AdhiveshanGrading.Entities.Configuration, AdhiveshanGrading.Models.ConfigurationUpdateModel>().ReverseMap();
+        CreateMap<Entities.User, UserModel>().ReverseMap();
+        CreateMap<Entities.User, UserCreateModel>().ReverseMap();
+        CreateMap<Entities.User, UserUpdateModel>().ReverseMap();
+        CreateMap<Entities.Configuration, ConfigurationModel>().ReverseMap();
+        CreateMap<Entities.Configuration, ConfigurationCreateModel>().ReverseMap();
+        CreateMap<Entities.Configuration, ConfigurationUpdateModel>().ReverseMap();
     }
 }

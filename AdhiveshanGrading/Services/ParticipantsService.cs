@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using AdhiveshanGrading.Entities;
-using MongoDB.Driver;
-using AdhiveshanGrading.Settings;
-using AutoMapper;
-using AdhiveshanGrading.Models;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace AdhiveshanGrading.Services;
 
 public interface IParticipantsService

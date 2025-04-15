@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-using AdhiveshanGrading.Models;
-using AdhiveshanGrading.Services;
-
-namespace AdhiveshanGradingAPI.WebAPI.Controllers;
+﻿namespace AdhiveshanGradingAPI.WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
