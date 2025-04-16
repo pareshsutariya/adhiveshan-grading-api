@@ -24,7 +24,6 @@ public class ParticipantsService : BaseService, IParticipantsService
         return entity?.Map<ParticipantModel>(mapper);
     }
 
-
     public async Task<ParticipantModel> GetByMISId(int misId)
     {
         var entity = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();

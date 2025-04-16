@@ -23,9 +23,8 @@ public class ParticipantModel : ModelBase
     public string Vyaktigat_Kirtan_Gaan { get; set; }
     public string Vyaktigat_Kirtan_Gaan_Category { get; set; }
     public string Gender { get; set; }
-    public int? MISId { get; set; }
 
-    /*
+    //public int? MISId { get; set; }
     public int? MISId
     {
         get
@@ -39,14 +38,13 @@ public class ParticipantModel : ModelBase
             {
                 int tmp;
 
-                if (int.TryParse(FirstLastName_MISID.Split(new[] { '-' })[0].Trim(), out tmp))
+                if (int.TryParse(FirstLastName_MISID.Split(new[] { '-' })[1].Trim(), out tmp))
                     misId = tmp;
             }
 
             return misId;
         }
     }
-    */
 
     public string FullName
     {
