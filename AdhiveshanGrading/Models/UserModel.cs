@@ -8,7 +8,7 @@ public class UserModel : ModelBase
     public string Password { get; set; }
     public string Status { get; set; }
 
-    public List<string> Permissions { get; set; } = new();
+    public List<string> Roles { get; set; } = new();
 }
 
 public class UserCreateModel
@@ -18,7 +18,7 @@ public class UserCreateModel
     public string Password { get; set; }
     public string Status { get; set; }
 
-    public List<string> Permissions { get; set; } = new();
+    public List<string> Roles { get; set; } = new();
 }
 
 public class UserUpdateModel : ModelBase
@@ -29,5 +29,5 @@ public class UserUpdateModel : ModelBase
     public string Password { get; set; }
     public string Status { get; set; }
 
-    public List<string> Permissions { get; set; } = new();
+    public List<string> Roles { get; set; } = new();
 }

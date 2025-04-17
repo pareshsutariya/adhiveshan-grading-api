@@ -9,5 +9,5 @@ public class User : MongoDBEntity
     public string Status { get; set; }
 
     [BsonIgnoreIfNull]
-    public List<string> Permissions { get; set; }
+    public List<string> Roles { get; set; }
 }
