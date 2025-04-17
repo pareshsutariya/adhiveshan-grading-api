@@ -4,7 +4,6 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
-    Task<ParticipantModel> GetById(int id);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -15,13 +14,6 @@ public class ParticipantsService : BaseService, IParticipantsService
     public ParticipantsService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
     {
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
-    }
-
-    public async Task<ParticipantModel> GetById(int id)
-    {
-        var entity = await _participantsCollection.Find(item => item.ParticipantId == id).FirstOrDefaultAsync();
-
-        return entity?.Map<ParticipantModel>(mapper);
     }
 
     public async Task<ParticipantModel> GetByMISId(int misId)
@@ -51,10 +43,13 @@ public class ParticipantsService : BaseService, IParticipantsService
 
         foreach (var model in models)
         {
-            var maxId = _participantsCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.ParticipantId;
+            if (string.IsNullOrEmpty(model.FirstLastName_MISID) || model.FirstLastName_MISID.IndexOf("-") == -1)
+                continue;
+
+            if (int.TryParse(model.FirstLastName_MISID.Split(new[] { '-' })[1].Trim(), out int tmp))
+                model.MISId = tmp;
 
             var entity = model.Map<Participant>(mapper);
-            entity.ParticipantId = (maxId.GetValueOrDefault() + 1);
 
             _participantsCollection.InsertOne(entity);
         }

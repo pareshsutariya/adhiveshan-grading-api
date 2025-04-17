@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Entities;
 
 public class Participant : MongoDBEntity
 {
-    public int ParticipantId { get; set; }
+    public int MISId { get; set; }
 
     [BsonIgnoreIfNull]
     public string Region { get; set; }
@@ -18,9 +18,6 @@ public class Participant : MongoDBEntity
 
     [BsonIgnoreIfNull]
     public string FirstLastName_MISID { get; set; }
-
-    [BsonIgnoreIfNull]
-    public int? MISId { get; set; }
 
     [BsonIgnoreIfNull]
     public string SkilledCompetitions { get; set; }

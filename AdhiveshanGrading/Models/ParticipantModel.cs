@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Models;
 
 public class ParticipantModel : ModelBase
 {
-    public int ParticipantId { get; set; }
+    public int MISId { get; set; }
     public string Region { get; set; }
     public string Center { get; set; }
     public string Zone { get; set; }
@@ -24,7 +24,7 @@ public class ParticipantModel : ModelBase
     public string Vyaktigat_Kirtan_Gaan_Category { get; set; }
     public string Gender { get; set; }
 
-    //public int? MISId { get; set; }
+    /*
     public int? MISId
     {
         get
@@ -45,6 +45,7 @@ public class ParticipantModel : ModelBase
             return misId;
         }
     }
+    */
 
     public string FullName
     {

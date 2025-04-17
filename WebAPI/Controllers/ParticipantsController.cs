@@ -14,9 +14,6 @@ public class ParticipantsController : ControllerBase
     [HttpGet]
     public async Task<List<ParticipantModel>> Get([FromQuery] string? center = "", [FromQuery] string? mandal = "") => await _service.Get(center, mandal);
 
-    [HttpGet("getById/{id}")]
-    public async Task<ParticipantModel> GetById(int id) => await _service.GetById(id);
-
     [HttpGet("getByMISId/{misId}")]
     public async Task<ParticipantModel> GetByMISId(int misId) => await _service.GetByMISId(misId);
 
