@@ -12,6 +12,7 @@ public class AdvGradingSettings : IAdvGradingSettings
 
     public string UsersCollectionName { get; set; } = null!;
     public string ConfigurationsCollectionName { get; set; } = null!;
+    public string CentersCollectionName { get; set; } = null!;
 }
 
 public interface IAdvGradingSettings
@@ -23,4 +24,5 @@ public interface IAdvGradingSettings
     string ParticipantsCollectionName { get; set; }
     string UsersCollectionName { get; set; }
     string ConfigurationsCollectionName { get; set; }
+    string CentersCollectionName { get; set; }
 }

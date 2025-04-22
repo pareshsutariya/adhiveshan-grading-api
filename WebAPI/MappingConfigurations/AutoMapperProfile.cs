@@ -9,8 +9,9 @@ public class AutoMapperProfile : Profile
         CreateMap<Entities.User, UserCreateModel>().ReverseMap();
         CreateMap<Entities.User, UserUpdateModel>().ReverseMap();
         CreateMap<Entities.Participant, ParticipantModel>().ReverseMap();
-        CreateMap<Entities.Configuration, ConfigurationModel>().ReverseMap();
-        CreateMap<Entities.Configuration, ConfigurationCreateModel>().ReverseMap();
-        CreateMap<Entities.Configuration, ConfigurationUpdateModel>().ReverseMap();
+        CreateMap<Entities.Center, CenterModel>().ReverseMap();
+        // CreateMap<Entities.Configuration, ConfigurationModel>().ReverseMap();
+        // CreateMap<Entities.Configuration, ConfigurationCreateModel>().ReverseMap();
+        // CreateMap<Entities.Configuration, ConfigurationUpdateModel>().ReverseMap();
     }
 }

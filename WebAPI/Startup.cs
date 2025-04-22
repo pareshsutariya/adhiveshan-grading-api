@@ -29,6 +29,8 @@ public class Startup
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IParticipantsService, ParticipantsService>();
         services.AddSingleton<ConfigurationsService>();
+        services.AddSingleton<ICentersService, CentersService>();
+
 
         services.AddCors();
         services.AddControllers();
