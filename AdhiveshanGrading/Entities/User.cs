@@ -6,8 +6,20 @@ public class User : MongoDBEntity
     public string FullName { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
+    public string Region { get; set; }
+    public string Center { get; set; }
     public string Status { get; set; }
+    public List<string> AssignedRoles { get; set; }
 
     [BsonIgnoreIfNull]
-    public List<string> Roles { get; set; }
+    public List<int> AssignedEventIds { get; set; }
+
+    [BsonIgnoreIfNull]
+    public List<int> AssignedMandals { get; set; }
+
+    [BsonIgnoreIfNull]
+    public List<int> AssignedSkillCategoryIds { get; set; }
+
+    [BsonIgnoreIfNull]
+    public DateTime? CheckedIn { get; set; }
 }
