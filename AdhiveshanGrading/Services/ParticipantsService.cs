@@ -37,10 +37,6 @@ public class ParticipantsService : BaseService, IParticipantsService
 
     public async Task<List<ParticipantModel>> Import(List<ParticipantModel> models)
     {
-        var gender = models.Where(m => !string.IsNullOrWhiteSpace(m.Gender)).FirstOrDefault().Gender;
-        var region = models.Where(m => !string.IsNullOrWhiteSpace(m.Region)).FirstOrDefault().Region;
-        _participantsCollection.DeleteMany(c => c.Gender == gender && c.Region == region);
-
         foreach (var model in models)
         {
             if (string.IsNullOrEmpty(model.FirstLastName_MISID) || model.FirstLastName_MISID.IndexOf("-") == -1)
@@ -48,6 +44,8 @@ public class ParticipantsService : BaseService, IParticipantsService
 
             if (int.TryParse(model.FirstLastName_MISID.Split(new[] { '-' })[1].Trim(), out int tmp))
                 model.MISId = tmp;
+
+            _participantsCollection.DeleteOne(c => c.MISId == model.MISId);
 
             var entity = model.Map<Participant>(mapper);
 
