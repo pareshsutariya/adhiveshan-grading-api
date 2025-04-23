@@ -23,9 +23,9 @@ public static class RolePermissionsService
     public const string Events_Add = "Events: Add";
     public const string Events_Update = "Events: Update";
 
-    public const string Grading_Participants_View = "Grading Participants: View";
-    public const string Grading_Participants_Add = "Grading Participants: Add";
-    public const string Grading_Participants_Update = "Grading Participants: Update";
+    public const string Grading_Participants_Search_Participants = "Grading Participants: Search Participants";
+    public const string Grading_Participants_Grade_Participants = "Grading Participants: Grade Participants";
+    public const string Grading_Participants_View_Participant_Grades = "Grading Participants: View Participant Grades";
 
     public static List<RolePermissionsModel> GetRolePermissions()
     {
@@ -84,6 +84,9 @@ public static class RolePermissionsService
             {
                 Grading_Questions_View,
                 Skill_Categories_View,
+                Grading_Participants_Search_Participants,
+                Grading_Participants_Grade_Participants,
+                Grading_Participants_View_Participant_Grades
             }
         };
 
