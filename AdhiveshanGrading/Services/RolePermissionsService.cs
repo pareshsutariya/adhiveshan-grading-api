@@ -1,6 +1,6 @@
 namespace AdhiveshanGrading.Services;
 
-public static class PermissionsService
+public static class RolePermissionsService
 {
     public const string Users_RegionalAdmins_View = "Users: Regional Admins: View";
     public const string Users_RegionalAdmins_Add = "Users: Regional Admins: Add";
