@@ -15,7 +15,7 @@ public class User : MongoDBEntity
     public List<int> AssignedEventIds { get; set; }
 
     [BsonIgnoreIfNull]
-    public List<int> AssignedMandals { get; set; }
+    public List<string> AssignedMandals { get; set; }
 
     [BsonIgnoreIfNull]
     public List<int> AssignedSkillCategoryIds { get; set; }
