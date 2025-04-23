@@ -25,7 +25,7 @@ public static class RolePermissionsService
 
     public const string Grading_Participants_Search_Participants = "Grading Participants: Search Participants";
     public const string Grading_Participants_Grade_Participants = "Grading Participants: Grade Participants";
-    public const string Grading_Participants_View_Participant_Grades = "Grading Participants: View Participant Grades";
+    public const string Grading_Participants_View_Participants_Grade = "Grading Participants: View Participants Grade";
 
     public static List<RolePermissionsModel> GetRolePermissions()
     {
@@ -86,7 +86,7 @@ public static class RolePermissionsService
                 Skill_Categories_View,
                 Grading_Participants_Search_Participants,
                 Grading_Participants_Grade_Participants,
-                Grading_Participants_View_Participant_Grades
+                Grading_Participants_View_Participants_Grade
             }
         };
 
