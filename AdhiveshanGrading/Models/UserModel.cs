@@ -13,7 +13,7 @@ public class UserModel : ModelBase
 
     public List<int> AssignedEventIds { get; set; }
     public List<string> AssignedMandals { get; set; }
-    public List<int> AssignedSkillCategoryIds { get; set; }
+    public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 }
 
@@ -29,7 +29,7 @@ public class UserCreateModel
 
     public List<int> AssignedEventIds { get; set; }
     public List<string> AssignedMandals { get; set; }
-    public List<int> AssignedSkillCategoryIds { get; set; }
+    public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 }
 
@@ -46,6 +46,6 @@ public class UserUpdateModel : ModelBase
 
     public List<int> AssignedEventIds { get; set; }
     public List<string> AssignedMandals { get; set; }
-    public List<int> AssignedSkillCategoryIds { get; set; }
+    public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 }

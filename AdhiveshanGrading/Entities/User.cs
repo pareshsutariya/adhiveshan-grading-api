@@ -18,7 +18,7 @@ public class User : MongoDBEntity
     public List<string> AssignedMandals { get; set; }
 
     [BsonIgnoreIfNull]
-    public List<int> AssignedSkillCategoryIds { get; set; }
+    public List<string> AssignedSkillCategories { get; set; }
 
     [BsonIgnoreIfNull]
     public DateTime? CheckedIn { get; set; }
