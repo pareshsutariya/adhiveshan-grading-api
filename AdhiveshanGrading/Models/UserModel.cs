@@ -4,7 +4,7 @@ public class UserModel : ModelBase
 {
     public int UserId { get; set; }
     public string FullName { get; set; }
-    public string Username { get; set; }
+    public string MISId { get; set; }
     public string Password { get; set; }
     public string Region { get; set; }
     public string Center { get; set; }
@@ -20,7 +20,7 @@ public class UserModel : ModelBase
 public class UserCreateModel
 {
     public string FullName { get; set; }
-    public string Username { get; set; }
+    public string MISId { get; set; }
     public string Password { get; set; }
     public string Region { get; set; }
     public string Center { get; set; }
@@ -37,7 +37,7 @@ public class UserUpdateModel : ModelBase
 {
     public int UserId { get; set; }
     public string FullName { get; set; }
-    public string Username { get; set; }
+    public string MISId { get; set; }
     public string Password { get; set; }
     public string Region { get; set; }
     public string Center { get; set; }

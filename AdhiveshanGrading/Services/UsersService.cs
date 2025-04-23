@@ -23,7 +23,7 @@ public class UsersService : BaseService, IUsersService
     {
         var entities = await _UsersCollection.Find(item => true).ToListAsync();
 
-        var models = entities.Select(c => c.Map<UserModel>(mapper)).OrderBy(c => c.Username).ToList();
+        var models = entities.Select(c => c.Map<UserModel>(mapper)).OrderBy(c => c.FullName).ToList();
 
         return models;
     }
@@ -38,7 +38,7 @@ public class UsersService : BaseService, IUsersService
     }
 
     public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password) =>
-        (await _UsersCollection.Find(item => item.Username.ToLower() == username.ToLower() && item.Password == password).FirstOrDefaultAsync())?.Map<UserModel>(mapper);
+        (await _UsersCollection.Find(item => item.MISId.ToLower() == username.ToLower() && item.Password == password).FirstOrDefaultAsync())?.Map<UserModel>(mapper);
 
     public UserModel Create(UserCreateModel createModel)
     {
