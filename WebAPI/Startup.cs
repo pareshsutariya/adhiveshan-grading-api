@@ -28,6 +28,7 @@ public class Startup
         services.Configure<AdvGradingSettings>(Configuration.GetSection(nameof(AdvGradingSettings)));
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IParticipantsService, ParticipantsService>();
+        services.AddSingleton<ICompetitionEventsService, CompetitionEventsService>();
         services.AddSingleton<ConfigurationsService>();
 
         services.AddCors();

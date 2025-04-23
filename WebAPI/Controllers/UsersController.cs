@@ -31,9 +31,7 @@ public class UsersController : ControllerBase
         var item = _service.Get(id);
 
         if (item == null)
-        {
             return NotFound();
-        }
 
         _service.Update(id, model);
 

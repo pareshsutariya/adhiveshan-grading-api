@@ -9,9 +9,9 @@ public class AdvGradingSettings : IAdvGradingSettings
     public string DatabaseName { get; set; } = null!;
 
     public string ParticipantsCollectionName { get; set; }
-
     public string UsersCollectionName { get; set; } = null!;
     public string ConfigurationsCollectionName { get; set; } = null!;
+    public string CompetitionEventsCollectionName { get; set; } = null!;
 }
 
 public interface IAdvGradingSettings
@@ -23,4 +23,5 @@ public interface IAdvGradingSettings
     string ParticipantsCollectionName { get; set; }
     string UsersCollectionName { get; set; }
     string ConfigurationsCollectionName { get; set; }
+    string CompetitionEventsCollectionName { get; set; }
 }
