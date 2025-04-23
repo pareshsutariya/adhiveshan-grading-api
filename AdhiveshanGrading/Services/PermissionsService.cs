@@ -23,13 +23,13 @@ public static class PermissionsService
     public const string Events_Add = "Events: Add";
     public const string Events_Update = "Events: Update";
 
-    public const string Grading_Partici_View = "Events: View";
-    public const string Events_Add = "Events: Add";
-    public const string Events_Update = "Events: Update";
+    public const string Grading_Participants_View = "Grading Participants: View";
+    public const string Grading_Participants_Add = "Grading Participants: Add";
+    public const string Grading_Participants_Update = "Grading Participants: Update";
 
     public static List<RolePermissionsModel> GetRolePermissions()
     {
-        var nationalAdmin = new RolePermissionsModel
+        var nationalAdminRole = new RolePermissionsModel
         {
             RoleName = "National Admin",
             Permissions = new List<string>
@@ -57,7 +57,7 @@ public static class PermissionsService
             }
         };
 
-        var regionalAdmin = new RolePermissionsModel
+        var regionalAdminRole = new RolePermissionsModel
         {
             RoleName = "Regional Admin",
             Permissions = new List<string>
@@ -77,7 +77,7 @@ public static class PermissionsService
             }
         };
 
-        var proctor = new RolePermissionsModel
+        var proctorRole = new RolePermissionsModel
         {
             RoleName = "Proctor",
             Permissions = new List<string>
@@ -88,8 +88,9 @@ public static class PermissionsService
         };
 
         var roles = new List<RolePermissionsModel>();
-        roles.Add(nationalAdmin);
-        roles.Add(regionalAdmin);
+        roles.Add(nationalAdminRole);
+        roles.Add(regionalAdminRole);
+        roles.Add(proctorRole);
 
         return roles;
     }
