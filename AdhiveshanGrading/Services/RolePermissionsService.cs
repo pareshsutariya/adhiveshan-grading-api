@@ -32,6 +32,8 @@ public static class RolePermissionsService
         var nationalAdminRole = new RolePermissionsModel
         {
             RoleName = "National Admin",
+            Icon = "fa-solid fa-user-shield",
+            Color = "brown",
             Permissions = new List<string>
             {
                 Users_RegionalAdmins_View,
@@ -60,6 +62,8 @@ public static class RolePermissionsService
         var regionalAdminRole = new RolePermissionsModel
         {
             RoleName = "Regional Admin",
+            Icon = "fa-solid fa-user-tag",
+            Color = "blue",
             Permissions = new List<string>
             {
                 Users_Proctors_View,
@@ -80,6 +84,8 @@ public static class RolePermissionsService
         var proctorRole = new RolePermissionsModel
         {
             RoleName = "Proctor",
+            Icon = "fa-solid fa-user-clock",
+            Color = "black",
             Permissions = new List<string>
             {
                 Grading_Questions_View,
