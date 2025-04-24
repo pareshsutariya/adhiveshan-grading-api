@@ -2,6 +2,7 @@ namespace AdhiveshanGrading.Services;
 
 public interface IGradingTopicsService
 {
+    Task<List<SkillCategoryModel>> GetSkillCategories();
     Task<List<GradingTopicModel>> Get();
     Task<GradingTopicModel> Get(int id);
     GradingTopicModel Create(GradingTopicCreateModel createModel);
@@ -17,6 +18,13 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
     {
         _GradingTopicsCollection = Database.GetCollection<GradingTopic>(settings.GradingTopicsCollectionName);
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
+    }
+
+    public async Task<List<SkillCategoryModel>> GetSkillCategories()
+    {
+        var entities = await _SkillsCollection.Find(item => true).ToListAsync();
+        var models = entities.Select(c => c.Map<SkillCategoryModel>(mapper)).OrderBy(c => c.Skill).ThenBy(c => c.Category).ToList();
+        return models;
     }
 
     public async Task<List<GradingTopicModel>> Get()
