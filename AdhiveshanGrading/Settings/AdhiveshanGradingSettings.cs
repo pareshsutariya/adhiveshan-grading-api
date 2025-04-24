@@ -12,6 +12,8 @@ public class AdvGradingSettings : IAdvGradingSettings
     public string UsersCollectionName { get; set; } = null!;
     public string ConfigurationsCollectionName { get; set; } = null!;
     public string CompetitionEventsCollectionName { get; set; } = null!;
+    public string GradingTopicsCollectionName { get; set; } = null!;
+    public string SkillCategoriesCollectionName { get; set; } = null!;
 }
 
 public interface IAdvGradingSettings
@@ -24,4 +26,6 @@ public interface IAdvGradingSettings
     string UsersCollectionName { get; set; }
     string ConfigurationsCollectionName { get; set; }
     string CompetitionEventsCollectionName { get; set; }
+    string GradingTopicsCollectionName { get; set; }
+    string SkillCategoriesCollectionName { get; set; }
 }

@@ -29,6 +29,7 @@ public class Startup
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IParticipantsService, ParticipantsService>();
         services.AddSingleton<ICompetitionEventsService, CompetitionEventsService>();
+        services.AddSingleton<IGradingTopicsService, GradingTopicsService>();
         services.AddSingleton<ConfigurationsService>();
 
         services.AddCors();
