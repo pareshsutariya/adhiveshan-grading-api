@@ -15,6 +15,8 @@ public class UserModel : ModelBase
     public List<string> AssignedMandals { get; set; }
     public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
+
+    public List<CompetitionEventModel> AssignedEvents { get; set; } = new();
 }
 
 public class UserCreateModel

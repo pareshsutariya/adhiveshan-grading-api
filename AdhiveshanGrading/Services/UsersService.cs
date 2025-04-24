@@ -13,10 +13,12 @@ public interface IUsersService
 public class UsersService : BaseService, IUsersService
 {
     private readonly IMongoCollection<User> _UsersCollection;
+    private readonly IMongoCollection<CompetitionEvent> _EventsCollection;
 
     public UsersService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
     {
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
+        _EventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
     }
 
     public async Task<List<UserModel>> Get()
@@ -24,6 +26,14 @@ public class UsersService : BaseService, IUsersService
         var entities = await _UsersCollection.Find(item => true).ToListAsync();
 
         var models = entities.Select(c => c.Map<UserModel>(mapper)).OrderBy(c => c.FullName).ToList();
+
+        var events = await _EventsCollection.Find(item => true).ToListAsync();
+        foreach (var user in models)
+        {
+            if (user.AssignedEventIds?.Count > 0 && events?.Count > 0)
+                user.AssignedEvents = events?.Where(c => user.AssignedEventIds.Contains(c.CompetitionEventId))
+                                            .Select(c => c.Map<CompetitionEventModel>(mapper)).ToList();
+        }
 
         return models;
     }

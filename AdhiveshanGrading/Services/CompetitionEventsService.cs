@@ -43,6 +43,8 @@ public class CompetitionEventsService : BaseService, ICompetitionEventsService
         var entity = createModel.Map<CompetitionEvent>(mapper);
         entity.CompetitionEventId = (maxId.Value + 1);
 
+        entity.Centers = entity.Centers.OrderBy(c => c).ToList();
+
         _CompetitionEventsCollection.InsertOne(entity);
 
         var model = entity.Map<CompetitionEventModel>(mapper);
@@ -50,6 +52,9 @@ public class CompetitionEventsService : BaseService, ICompetitionEventsService
         return model;
     }
 
-    public void Update(int id, CompetitionEventUpdateModel updateModel) =>
+    public void Update(int id, CompetitionEventUpdateModel updateModel)
+    {
+        updateModel.Centers = updateModel.Centers.OrderBy(c => c).ToList();
         _CompetitionEventsCollection.ReplaceOne(item => item.CompetitionEventId == id, updateModel.Map<CompetitionEvent>(mapper));
+    }
 }
