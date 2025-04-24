@@ -43,6 +43,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
             {
                 item.Skill = skill?.Skill;
                 item.Category = skill?.Category;
+                item.Color = skill?.Color;
             }
         }
 

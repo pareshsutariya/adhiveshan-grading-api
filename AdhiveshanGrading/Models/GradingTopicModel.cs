@@ -18,6 +18,7 @@ public class GradingTopicModel : ModelBase
     // ------------
     public string Skill { get; set; }
     public string Category { get; set; }
+    public string Color { get; set; }
 }
 
 public class GradingTopicCreateModel : ModelBase
