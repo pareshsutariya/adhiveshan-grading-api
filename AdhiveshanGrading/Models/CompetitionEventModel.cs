@@ -29,6 +29,7 @@ public class CompetitionEventCreateModel
 
 public class CompetitionEventUpdateModel : ModelBase
 {
+    public int CompetitionEventId { get; set; }
     public string Name { get; set; }
     public string Region { get; set; }
     public string HostCenter { get; set; }
