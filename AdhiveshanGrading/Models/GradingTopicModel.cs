@@ -19,6 +19,7 @@ public class GradingTopicModel : ModelBase
     public string Skill { get; set; }
     public string Category { get; set; }
     public string Color { get; set; }
+    public string SkillWithCategory => $"{Skill} : {Category}";
 }
 
 public class GradingTopicCreateModel : ModelBase

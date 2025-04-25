@@ -35,7 +35,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
 
         var skillCategories = await _SkillsCollection.Find(item => true).ToListAsync();
 
-        foreach (var item in skillCategories)
+        foreach (var item in models)
         {
             var skill = skillCategories.FirstOrDefault(c => c.SkillCategoryId == item.SkillCategoryId);
 

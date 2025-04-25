@@ -7,4 +7,7 @@ public class SkillCategoryModel : ModelBase
     public string Category { get; set; }
     public string Color { get; set; }
     public string Status { get; set; }
+
+    //----
+    public string SkillWithCategory => $"{Skill} : {Category}";
 }
