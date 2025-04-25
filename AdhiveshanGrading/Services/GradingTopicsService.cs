@@ -31,7 +31,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
     {
         var entities = await _GradingTopicsCollection.Find(item => true).ToListAsync();
 
-        var models = entities.Select(c => c.Map<GradingTopicModel>(mapper)).OrderBy(c => c.Name).ToList();
+        var models = entities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
 
         var skillCategories = await _SkillsCollection.Find(item => true).ToListAsync();
 
@@ -47,7 +47,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
             }
         }
 
-        return models;
+        return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.Name).ToList();
     }
 
     public async Task<GradingTopicModel> Get(int id)

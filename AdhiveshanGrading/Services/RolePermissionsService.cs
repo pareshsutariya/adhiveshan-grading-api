@@ -19,6 +19,9 @@ public static class RolePermissionsService
     public const string Participants_View = "Participants: View";
     public const string Participants_Import = "Participants: Import";
 
+    public const string CheckIn_View = "Check In: View";
+    public const string CheckIn_Update = "Check In: Update";
+
     public const string Events_View = "Events: View";
     public const string Events_Add = "Events: Add";
     public const string Events_Update = "Events: Update";
@@ -96,10 +99,24 @@ public static class RolePermissionsService
             }
         };
 
+
+        var checkInRole = new RolePermissionsModel
+        {
+            RoleName = "Check In",
+            Icon = "fa-solid fa-user-check",
+            Color = "green",
+            Permissions = new List<string>
+            {
+                CheckIn_View,
+                CheckIn_Update,
+            }
+        };
+
         var roles = new List<RolePermissionsModel>();
         roles.Add(nationalAdminRole);
         roles.Add(regionalAdminRole);
         roles.Add(proctorRole);
+        roles.Add(checkInRole);
 
         return roles;
     }

@@ -7,6 +7,8 @@ public class GradingTopic : MongoDBEntity
     public string Name { get; set; }
     public string Description { get; set; }
 
+    public int Sequence { get; set; }
+
     public int Round { get; set; }
 
     [BsonIgnoreIfNull]

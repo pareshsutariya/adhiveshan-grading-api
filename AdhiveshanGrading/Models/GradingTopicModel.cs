@@ -8,6 +8,8 @@ public class GradingTopicModel : ModelBase
 
     public string Name { get; set; }
     public string Description { get; set; }
+    public int Sequence { get; set; }
+
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
@@ -28,6 +30,8 @@ public class GradingTopicCreateModel : ModelBase
 
     public string Name { get; set; }
     public string Description { get; set; }
+    public int Sequence { get; set; }
+
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
@@ -44,6 +48,8 @@ public class GradingTopicUpdateModel : ModelBase
 
     public string Name { get; set; }
     public string Description { get; set; }
+    public int Sequence { get; set; }
+
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
