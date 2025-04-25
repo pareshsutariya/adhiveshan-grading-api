@@ -12,7 +12,7 @@ public class UserModel : ModelBase
     public List<string> AssignedRoles { get; set; }
 
     public List<int> AssignedEventIds { get; set; }
-    public List<string> AssignedMandals { get; set; }
+    public List<string> AssignedGenders { get; set; }
     public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 
@@ -30,7 +30,7 @@ public class UserCreateModel
     public List<string> AssignedRoles { get; set; } = new();
 
     public List<int> AssignedEventIds { get; set; }
-    public List<string> AssignedMandals { get; set; }
+    public List<string> AssignedGenders { get; set; }
     public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 }
@@ -47,7 +47,7 @@ public class UserUpdateModel : ModelBase
     public List<string> AssignedRoles { get; set; } = new();
 
     public List<int> AssignedEventIds { get; set; }
-    public List<string> AssignedMandals { get; set; }
+    public List<string> AssignedGenders { get; set; }
     public List<string> AssignedSkillCategories { get; set; }
     public DateTime? CheckedIn { get; set; }
 }
