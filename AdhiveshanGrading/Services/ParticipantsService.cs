@@ -29,8 +29,7 @@ public class ParticipantsService : BaseService, IParticipantsService
 
         var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
                             .OrderBy(c => c.Gender)
-                            .ThenByDescending(c => c.Completed_Pushpo_Range_Title)
-                            .ThenBy(c => c.FirstLastName_MISID).ToList();
+                            .ThenBy(c => c.FullName).ToList();
 
         return models;
     }
@@ -39,11 +38,11 @@ public class ParticipantsService : BaseService, IParticipantsService
     {
         foreach (var model in models)
         {
-            if (string.IsNullOrEmpty(model.FirstLastName_MISID) || model.FirstLastName_MISID.IndexOf("-") == -1)
-                continue;
+            // if (string.IsNullOrEmpty(model.MISId) || model.FirstLastName_MISID.IndexOf("-") == -1)
+            //     continue;
 
-            if (int.TryParse(model.FirstLastName_MISID.Split(new[] { '-' })[1].Trim(), out int tmp))
-                model.MISId = tmp;
+            // if (int.TryParse(model.FirstLastName_MISID.Split(new[] { '-' })[1].Trim(), out int tmp))
+            //     model.MISId = tmp;
 
             _participantsCollection.DeleteOne(c => c.MISId == model.MISId);
 
