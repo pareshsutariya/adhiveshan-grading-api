@@ -4,6 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
+    Task<ParticipantModel> GetByMISIdAneSkillCategory(int misId, string skillCategory);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -21,6 +22,20 @@ public class ParticipantsService : BaseService, IParticipantsService
         var entity = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
 
         return entity?.Map<ParticipantModel>(mapper);
+    }
+
+    public async Task<ParticipantModel> GetByMISIdAneSkillCategory(int misId, string skillCategory)
+    {
+        var skill = skillCategory.Split(":")[0].Trim();
+        var category = skillCategory.Split(":")[1].Trim();
+
+        var entity = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
+
+        if (skill == "Pravachan" && entity.Speech_Pravachan_Category.Contains(category) ||
+            skill == "Emcee" && entity.Emcee_Category.Contains(category))
+            return entity?.Map<ParticipantModel>(mapper);
+
+        return null;
     }
 
     public async Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "")
