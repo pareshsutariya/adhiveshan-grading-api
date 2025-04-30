@@ -17,6 +17,10 @@ public class GradingTopicsController : ControllerBase
     [HttpGet]
     public async Task<List<GradingTopicModel>> Get() => await _service.Get();
 
+    [HttpGet("GetBySkillCategory/{skillCategory}")]
+    public async Task<List<GradingTopicModel>> GetBySkillCategory(string skillCategory)
+        => await _service.GetBySkillCategory(skillCategory);
+
     [HttpGet("{id}")]
     public async Task<GradingTopicModel> Get(int id) => await _service.Get(id);
 
