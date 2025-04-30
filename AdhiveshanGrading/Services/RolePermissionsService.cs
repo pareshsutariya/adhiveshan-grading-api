@@ -2,6 +2,10 @@ namespace AdhiveshanGrading.Services;
 
 public static class RolePermissionsService
 {
+    public const string Users_NationalAdmins_View = "Users: National Admins: View";
+    public const string Users_NationalAdmins_Add = "Users: National Admins: Add";
+    public const string Users_NationalAdmins_Update = "Users: National Admins: Update";
+
     public const string Users_RegionalAdmins_View = "Users: Regional Admins: View";
     public const string Users_RegionalAdmins_Add = "Users: Regional Admins: Add";
     public const string Users_RegionalAdmins_Update = "Users: Regional Admins: Update";
@@ -42,6 +46,10 @@ public static class RolePermissionsService
             Color = "brown",
             Permissions = new List<string>
             {
+                Users_NationalAdmins_View,
+                Users_NationalAdmins_Add,
+                Users_NationalAdmins_Update,
+
                 Users_RegionalAdmins_View,
                 Users_RegionalAdmins_Add,
                 Users_RegionalAdmins_Update,
@@ -79,8 +87,6 @@ public static class RolePermissionsService
                 Users_Proctors_Add,
                 Users_Proctors_Update,
 
-                Grading_Questions_View,
-
                 Skill_Categories_View,
 
                 Participants_View,
@@ -97,7 +103,6 @@ public static class RolePermissionsService
             Color = "black",
             Permissions = new List<string>
             {
-                Grading_Questions_View,
                 Skill_Categories_View,
                 Grading_Participants_Search_Participants,
                 Grading_Participants_Grade_Participants,
