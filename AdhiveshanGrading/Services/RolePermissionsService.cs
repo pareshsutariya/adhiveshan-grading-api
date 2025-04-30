@@ -143,16 +143,29 @@ public static class RolePermissionsService
                 }
 
                 if (model.RoleName == "National Admin")
+                {
                     pivot.NationalAdmin = true;
-
+                    pivot.NationalAdminColor = model.Color;
+                    pivot.NationalAdminIcon = model.Icon;
+                }
                 else if (model.RoleName == "Regional Admin")
+                {
                     pivot.RegionalAdmin = true;
-
+                    pivot.RegionalAdminColor = model.Color;
+                    pivot.RegionalAdminIcon = model.Icon;
+                }
                 else if (model.RoleName == "Proctor")
+                {
                     pivot.Proctor = true;
-
+                    pivot.ProctorColor = model.Color;
+                    pivot.ProctorIcon = model.Icon;
+                }
                 else if (model.RoleName == "Check In")
+                {
                     pivot.CheckIn = true;
+                    pivot.CheckInColor = model.Color;
+                    pivot.CheckInIcon = model.Icon;
+                }
             }
         }
 
