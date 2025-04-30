@@ -105,7 +105,6 @@ public static class RolePermissionsService
             }
         };
 
-
         var checkInRole = new RolePermissionsModel
         {
             RoleName = "Check In",
@@ -125,5 +124,38 @@ public static class RolePermissionsService
         roles.Add(checkInRole);
 
         return roles;
+    }
+
+    public static List<RolePermissionsPivotModel> GetRolePermissionsPivot()
+    {
+        var models = GetRolePermissions();
+        var pivotModels = new List<RolePermissionsPivotModel> { };
+
+        foreach (var model in models)
+        {
+            foreach (var per in model.Permissions)
+            {
+                var pivot = pivotModels.FirstOrDefault(c => c.Permission == per);
+                if (pivot == null)
+                {
+                    pivot = new RolePermissionsPivotModel { Permission = per };
+                    pivotModels.Add(pivot);
+                }
+
+                if (model.RoleName == "National Admin")
+                    pivot.NationalAdmin = true;
+
+                else if (model.RoleName == "Regional Admin")
+                    pivot.RegionalAdmin = true;
+
+                else if (model.RoleName == "Proctor")
+                    pivot.Proctor = true;
+
+                else if (model.RoleName == "Check In")
+                    pivot.CheckIn = true;
+            }
+        }
+
+        return pivotModels;
     }
 }
