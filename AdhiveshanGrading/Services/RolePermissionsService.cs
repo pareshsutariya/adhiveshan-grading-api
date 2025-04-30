@@ -14,6 +14,10 @@ public static class RolePermissionsService
     public const string Users_Proctors_Add = "Users: Proctors: Add";
     public const string Users_Proctors_Update = "Users: Proctors: Update";
 
+    public const string Users_CheckIns_View = "Users: Check Ins: View";
+    public const string Users_CheckIns_Add = "Users: Check Ins: Add";
+    public const string Users_CheckIns_Update = "Users: Check Ins: Update";
+
     public const string Grading_Questions_View = "Grading Questions: View";
     public const string Grading_Questions_Add = "Grading Questions: Add";
     public const string Grading_Questions_Update = "Grading Questions: Update";
@@ -73,6 +77,10 @@ public static class RolePermissionsService
                 Users_Proctors_View,
                 Users_Proctors_Add,
                 Users_Proctors_Update,
+
+                Users_CheckIns_View,
+                Users_CheckIns_Add,
+                Users_CheckIns_Update,
             }
         };
 
@@ -94,6 +102,10 @@ public static class RolePermissionsService
                 Users_Proctors_View,
                 Users_Proctors_Add,
                 Users_Proctors_Update,
+
+                Users_CheckIns_View,
+                Users_CheckIns_Add,
+                Users_CheckIns_Update,
             }
         };
 
