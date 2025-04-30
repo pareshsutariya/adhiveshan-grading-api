@@ -31,6 +31,7 @@ public class Startup
         services.AddSingleton<IParticipantsService, ParticipantsService>();
         services.AddSingleton<ICompetitionEventsService, CompetitionEventsService>();
         services.AddSingleton<IGradingTopicsService, GradingTopicsService>();
+        services.AddSingleton<IGradesService, GradesService>();
         services.AddSingleton<ConfigurationsService>();
 
         services.AddCors();
