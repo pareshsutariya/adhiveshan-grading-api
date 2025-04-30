@@ -17,8 +17,9 @@ public class ParticipantsController : ControllerBase
     [HttpGet("getByMISId/{misId}")]
     public async Task<ParticipantModel> GetByMISId(int misId) => await _service.GetByMISId(misId);
 
-    [HttpGet("getByMISIdAneSkillCategory/{misId}/{skillCategory}")]
-    public async Task<ParticipantModel> GetByMISIdAneSkillCategory(int misId, string skillCategory) => await _service.GetByMISIdAneSkillCategory(misId, skillCategory);
+    [HttpGet("GetCandidateForProctoring/{misId}/{skillCategory}/{proctorUserId}")]
+    public async Task<ParticipantModel> GetCandidateForProctoring(int misId, string skillCategory, int proctorUserId)
+        => await _service.GetCandidateForProctoring(misId, skillCategory, proctorUserId);
 
     [HttpPost("import")]
     public async Task<ActionResult<List<ParticipantModel>>> Import(List<ParticipantModel> models)
