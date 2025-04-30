@@ -33,34 +33,38 @@ public class ParticipantsService : BaseService, IParticipantsService
         // Get participant by MIS Id
         var participant = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
         if (participant == null)
-            throw new Exception($"Participant not found for the given MIS Id: {misId}");
+            throw new ApplicationException($"Participant not found for the given MIS Id: {misId}");
 
         var skill = skillCategory.Split(":")[0].Trim();
         var category = skillCategory.Split(":")[1].Trim();
 
         // Validate participant skill
         if (skill == "Pravachan" && !participant.Speech_Pravachan_Category.Contains(category))
-            throw new Exception($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
         if (skill == "Emcee" && !participant.Emcee_Category.Contains(category))
-            throw new Exception($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
 
         // Get Proctor
         var proctorUser = await _usersCollection.Find(item => item.UserId == proctorUserId).FirstOrDefaultAsync();
         if (proctorUser == null)
-            throw new Exception($"Proctor not found");
+            throw new ApplicationException($"Proctor not found");
+
+        // Proctor assigned Genders
+        if (!proctorUser.AssignedGenders.Contains(participant.Gender))
+            throw new ApplicationException($"Proctor {proctorUser.FullName} is not now allowed to do proctoring for {participant.Gender} gender");
 
         // Proctor Events
         if (!proctorUser.AssignedEventIds.Any())
-            throw new Exception($"Proctor {proctorUser.FullName} is not assigned any Competition Event");
+            throw new ApplicationException($"Proctor {proctorUser.FullName} is not assigned any Competition Event");
 
         // Active Events
         var events = await _competitionEventsCollection.Find(item => proctorUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
         if (!events.Any())
-            throw new Exception($"Proctor {proctorUser.FullName}'s assigned Competition Events are Not Active");
+            throw new ApplicationException($"Proctor {proctorUser.FullName}'s assigned Competition Events are Not Active");
 
         // Event Center vs Participant Center
         if (!events.SelectMany(e => e.Centers).Contains(participant.Center))
-            throw new Exception($"Participant '{participant.FirstName} {participant.LastName}' center {participant.Center} is not matching with proctor's assigned events' center");
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center {participant.Center} is not matching with proctor's assigned events' center");
 
         return participant?.Map<ParticipantModel>(mapper);
     }
