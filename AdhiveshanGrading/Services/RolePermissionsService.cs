@@ -46,6 +46,22 @@ public static class RolePermissionsService
             Color = "brown",
             Permissions = new List<string>
             {
+                Participants_View,
+                Participants_Import,
+
+                Skill_Categories_View,
+
+                Grading_Questions_View,
+                Grading_Questions_Add,
+                Grading_Questions_Update,
+
+                Events_View,
+                Events_Add,
+                Events_Update,
+
+                Reports_Check_In_Report,
+                Reports_Grading_Report,
+
                 Users_NationalAdmins_View,
                 Users_NationalAdmins_Add,
                 Users_NationalAdmins_Update,
@@ -57,22 +73,6 @@ public static class RolePermissionsService
                 Users_Proctors_View,
                 Users_Proctors_Add,
                 Users_Proctors_Update,
-
-                Grading_Questions_View,
-                Grading_Questions_Add,
-                Grading_Questions_Update,
-
-                Skill_Categories_View,
-
-                Participants_View,
-                Participants_Import,
-
-                Events_View,
-                Events_Add,
-                Events_Update,
-
-                Reports_Check_In_Report,
-                Reports_Grading_Report
             }
         };
 
@@ -83,16 +83,17 @@ public static class RolePermissionsService
             Color = "blue",
             Permissions = new List<string>
             {
-                Users_Proctors_View,
-                Users_Proctors_Add,
-                Users_Proctors_Update,
-
+                Participants_View,
                 Skill_Categories_View,
 
-                Participants_View,
+                Grading_Questions_View,
 
                 Events_View,
                 Events_Update,
+
+                Users_Proctors_View,
+                Users_Proctors_Add,
+                Users_Proctors_Update,
             }
         };
 
