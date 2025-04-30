@@ -61,7 +61,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
         if (skillCategoryEntity == null)
             throw new ApplicationException($"Skill Category not found");
 
-        var entities = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId).ToListAsync();
+        var entities = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId && item.Status == "Active").ToListAsync();
 
         var models = entities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
 
