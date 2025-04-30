@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Entities;
 
 public class Grade : MongoDBEntity
 {
-    public int GradingId { get; set; }
+    public int GradeId { get; set; }
 
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }

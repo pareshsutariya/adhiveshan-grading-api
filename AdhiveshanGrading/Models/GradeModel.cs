@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Models;
 
 public class GradeModel : ModelBase
 {
-    public int GradingId { get; set; }
+    public int GradeId { get; set; }
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
     public decimal Score { get; set; }
