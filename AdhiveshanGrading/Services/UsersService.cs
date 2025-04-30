@@ -47,8 +47,21 @@ public class UsersService : BaseService, IUsersService
         return model;
     }
 
-    public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password) =>
-        (await _UsersCollection.Find(item => item.MISId.ToLower() == username.ToLower() && item.Password == password).FirstOrDefaultAsync())?.Map<UserModel>(mapper);
+    public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)
+    {
+        var userModel = (await _UsersCollection.Find(item => item.MISId.ToLower() == username.ToLower() && item.Password == password)
+                                               .FirstOrDefaultAsync()
+                        )?.Map<UserModel>(mapper);
+
+        if (userModel != null && userModel.AssignedRoles.Any())
+        {
+            userModel.AssignedPermissions = RolePermissionsService.GetRolePermissions()
+                            .Where(r => userModel.AssignedRoles.Contains(r.RoleName))
+                            .SelectMany(c => c.Permissions).ToList();
+        }
+
+        return userModel;
+    }
 
     public UserModel Create(UserCreateModel createModel)
     {

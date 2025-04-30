@@ -17,6 +17,9 @@ public class UserModel : ModelBase
     public DateTime? CheckedIn { get; set; }
 
     public List<CompetitionEventModel> AssignedEvents { get; set; } = new();
+
+    // ----
+    public List<string> AssignedPermissions { get; set; } = new();
 }
 
 public class UserCreateModel
