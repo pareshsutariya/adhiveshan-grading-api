@@ -21,7 +21,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            context.Response.ContentType = "text/plain";
+            //context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             if (ex is ApplicationException)

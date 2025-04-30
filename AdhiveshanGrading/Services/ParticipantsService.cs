@@ -4,7 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
-    Task<ParticipantModel> GetCandidateForProctoring(int misId, string skillCategory, int proctorUserId);
+    Task<ParticipantModel> GetParticipantForProctoring(int misId, string skillCategory, int proctorUserId);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -28,7 +28,7 @@ public class ParticipantsService : BaseService, IParticipantsService
         return entity?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetCandidateForProctoring(int misId, string skillCategory, int proctorUserId)
+    public async Task<ParticipantModel> GetParticipantForProctoring(int misId, string skillCategory, int proctorUserId)
     {
         // Get participant by MIS Id
         var participant = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
