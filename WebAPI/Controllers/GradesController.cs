@@ -16,10 +16,6 @@ public class GradesController : ControllerBase
         => await _service.GetForParticipantAndProctor(misId, skillCategory, proctorUserId);
 
     [HttpPost]
-    public ActionResult AddOrUpdateForParticipantAndProctor(GradeUpdateModel model)
-    {
-        _service.AddOrUpdateForParticipantAndProctor(model);
-
-        return NoContent();
-    }
+    public async Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel model) =>
+        await _service.AddOrUpdateForParticipantAndProctor(model);
 }

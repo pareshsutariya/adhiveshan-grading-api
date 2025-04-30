@@ -30,6 +30,9 @@ public static class RolePermissionsService
     public const string Grading_Participants_Grade_Participants = "Grading Participants: Grade Participants";
     public const string Grading_Participants_View_Participants_Grade = "Grading Participants: View Participants Grade";
 
+    public const string Reports_Check_In_Report = "Reports: Check In Report";
+    public const string Reports_Grading_Report = "Reports: Grading Report";
+
     public static List<RolePermissionsModel> GetRolePermissions()
     {
         var nationalAdminRole = new RolePermissionsModel
@@ -59,6 +62,9 @@ public static class RolePermissionsService
                 Events_View,
                 Events_Add,
                 Events_Update,
+
+                Reports_Check_In_Report,
+                Reports_Grading_Report
             }
         };
 

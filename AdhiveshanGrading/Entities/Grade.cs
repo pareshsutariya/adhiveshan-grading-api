@@ -6,7 +6,10 @@ public class Grade : MongoDBEntity
 
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
-    public decimal Score { get; set; }
 
-    public int ProctorUserId { get; set; }
+    [BsonIgnoreIfNull]
+    public decimal? Score { get; set; }
+
+    [BsonIgnoreIfNull]
+    public int? ProctorUserId { get; set; }
 }

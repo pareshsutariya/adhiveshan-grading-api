@@ -3,7 +3,7 @@ namespace AdhiveshanGrading.Services;
 public interface IGradesService
 {
     Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId);
-    Task AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel);
+    Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel);
 }
 
 public class GradesService : BaseService, IGradesService
@@ -21,46 +21,70 @@ public class GradesService : BaseService, IGradesService
 
     public async Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId)
     {
+        var result = new List<GradeModel> { };
+
         var skill = skillCategory.Split(":")[0].Trim();
         var category = skillCategory.Split(":")[1].Trim();
 
         // Skill Category Entity
         var skillCategoryEntity = await _SkillsCollection.Find(item => item.Skill == skill && item.Category == category).FirstOrDefaultAsync();
         if (skillCategoryEntity == null)
-            return Enumerable.Empty<GradeModel>().ToList();
+            return result;
 
         // Grading Topics for Skill Category
-        var gradingTopics = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId).ToListAsync();
-        if (!gradingTopics.Any())
-            return Enumerable.Empty<GradeModel>().ToList();
+        var gradingTopicEntities = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId).ToListAsync();
+        if (!gradingTopicEntities.Any())
+            return result;
 
-        // Participant Grades for the Skill Category
-        var entities = await _GradesCollection.Find(item => item.MISId == misId && item.ProctorUserId == proctorUserId).ToListAsync();
-        if (!entities.Any())
-            return Enumerable.Empty<GradeModel>().ToList();
-
-        var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
-
-        foreach (var item in models)
+        var gradingTopicModels = gradingTopicEntities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
+        foreach (var item in gradingTopicModels)
         {
-            var gradingTopic = gradingTopics.FirstOrDefault(c => c.GradingTopicId == item.GradingTopicId);
-            if (gradingTopic != null)
+            if (skillCategoryEntity != null)
             {
-                if (skillCategoryEntity != null)
-                {
-                    item.TopicName = gradingTopic.Name;
-                    item.Sequence = gradingTopic.Sequence;
-                    item.Skill = skillCategoryEntity?.Skill;
-                    item.Category = skillCategoryEntity?.Category;
-                    item.Color = skillCategoryEntity?.Color;
-                }
+                item.Skill = skillCategoryEntity?.Skill;
+                item.Category = skillCategoryEntity?.Category;
+                item.Color = skillCategoryEntity?.Color;
             }
         }
 
-        return models.OrderBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
+        // Participant Grades for the Skill Category
+        var entities = await _GradesCollection.Find(item => item.MISId == misId && item.ProctorUserId == proctorUserId).ToListAsync();
+        // if (!entities.Any())
+        //     return result;
+
+        //var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
+
+        foreach (var topic in gradingTopicModels)
+        {
+            var model = new GradeModel
+            {
+                MISId = misId,
+                GradingTopicId = topic.GradingTopicId,
+                // ----
+                TopicName = topic.Name,
+                Sequence = topic.Sequence,
+                WeightageOptions = topic.WeightageOptions,
+
+                Skill = skillCategoryEntity?.Skill,
+                Category = skillCategoryEntity?.Category,
+                Color = skillCategoryEntity?.Color,
+            };
+
+            var entity = entities.FirstOrDefault(c => c.GradingTopicId == topic.GradingTopicId);
+            if (entity != null)
+            {
+                model.GradeId = entity.GradeId;
+                model.Score = entity.Score;
+                model.ProctorUserId = entity.ProctorUserId;
+            }
+
+            result.Add(model);
+        }
+
+        return result.OrderBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
     }
 
-    public async Task AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel)
+    public async Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel)
     {
         var entity = await _GradesCollection.Find(item =>
                 item.MISId == updateModel.MISId &&
@@ -89,5 +113,7 @@ public class GradesService : BaseService, IGradesService
             entity.Score = updateModel.Score;
             _GradesCollection.ReplaceOne(item => item.GradeId == entity.GradeId, entity);
         }
+
+        return entity.Map<GradeModel>(mapper);
     }
 }
