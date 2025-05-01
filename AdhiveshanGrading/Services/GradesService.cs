@@ -127,9 +127,9 @@ public class GradesService : BaseService, IGradesService
                 }
             }
 
-            // var participant = await _participantsCollection.Find(item => item.MISId == item.MISId).FirstOrDefaultAsync();
+            var participant = await _participantsCollection.Find(c => c.MISId == item.MISId).FirstOrDefaultAsync();
 
-            // item.Participant = participant?.Map<ParticipantModel>(mapper);
+            item.Participant = participant?.Map<ParticipantModel>(mapper);
 
             item.ProctorName = proctor?.FullName;
         }
