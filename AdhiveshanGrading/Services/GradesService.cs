@@ -3,6 +3,7 @@ namespace AdhiveshanGrading.Services;
 public interface IGradesService
 {
     Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId);
+    Task<List<GradeModel>> GetGradedParticipantsForProctor(int proctorUserId);
     Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel);
 }
 
@@ -11,9 +12,13 @@ public class GradesService : BaseService, IGradesService
     private readonly IMongoCollection<Grade> _GradesCollection;
     private readonly IMongoCollection<GradingTopic> _GradingTopicsCollection;
     private readonly IMongoCollection<SkillCategory> _SkillsCollection;
+    private readonly IMongoCollection<User> _UsersCollection;
+    private readonly IMongoCollection<Participant> _participantsCollection;
 
     public GradesService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
     {
+        _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
+        _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
         _GradesCollection = Database.GetCollection<Grade>(settings.GradesCollectionName);
         _GradingTopicsCollection = Database.GetCollection<GradingTopic>(settings.GradingTopicsCollectionName);
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
@@ -82,6 +87,54 @@ public class GradesService : BaseService, IGradesService
         }
 
         return result.OrderBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
+    }
+
+    public async Task<List<GradeModel>> GetGradedParticipantsForProctor(int proctorUserId)
+    {
+        // Proctor
+        var proctor = await _UsersCollection.Find<User>(item => item.UserId == proctorUserId).FirstOrDefaultAsync();
+
+        // Graded Participants For proctor
+        var entities = await _GradesCollection.Find(item => item.ProctorUserId == proctorUserId).ToListAsync();
+
+        var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
+        if (!models.Any())
+            return models;
+
+        // Grading Topics for Skill Category
+        var topicIds = entities.Select(e => e.GradingTopicId).ToList();
+        var gradingTopicEntities = await _GradingTopicsCollection.Find(item => topicIds.Contains(item.GradingTopicId)).ToListAsync();
+
+        // Skill Category Entity
+        var skillCategoryIds = gradingTopicEntities.Select(g => g.SkillCategoryId).ToList();
+        var skillCategoryEntities = await _SkillsCollection.Find(item => skillCategoryIds.Contains(item.SkillCategoryId)).ToListAsync();
+
+        foreach (var item in models)
+        {
+            var topic = gradingTopicEntities.FirstOrDefault(c => c.GradingTopicId == item.GradingTopicId);
+            if (topic != null)
+            {
+                item.TopicName = topic.Name;
+                item.Sequence = topic.Sequence;
+                item.TopicName = topic.Name;
+                var skillCategory = skillCategoryEntities.FirstOrDefault(c => c.SkillCategoryId == topic.SkillCategoryId);
+
+                if (skillCategory != null)
+                {
+                    item.Skill = skillCategory?.Skill;
+                    item.Category = skillCategory?.Category;
+                    item.Color = skillCategory?.Color;
+                }
+            }
+
+            // var participant = await _participantsCollection.Find(item => item.MISId == item.MISId).FirstOrDefaultAsync();
+
+            // item.Participant = participant?.Map<ParticipantModel>(mapper);
+
+            item.ProctorName = proctor?.FullName;
+        }
+
+        return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
     }
 
     public async Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel)

@@ -9,6 +9,7 @@ public class GradeModel : ModelBase
     public int? ProctorUserId { get; set; }
 
     // ------------
+    public ParticipantModel Participant { get; set; }
     public string TopicName { get; set; }
     public int Sequence { get; set; }
     public List<decimal> WeightageOptions { get; set; }
@@ -17,6 +18,7 @@ public class GradeModel : ModelBase
     public string Category { get; set; }
     public string Color { get; set; }
     public string SkillWithCategory => $"{Skill} : {Category}";
+    public string ProctorName { get; set; }
 }
 
 public class GradeUpdateModel : ModelBase
