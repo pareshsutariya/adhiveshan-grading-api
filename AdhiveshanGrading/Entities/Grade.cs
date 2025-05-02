@@ -11,5 +11,5 @@ public class Grade : MongoDBEntity
     public decimal? Score { get; set; }
 
     [BsonIgnoreIfNull]
-    public int? ProctorUserId { get; set; }
+    public int? JudgeUserId { get; set; }
 }

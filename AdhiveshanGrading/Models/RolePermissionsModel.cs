@@ -14,7 +14,7 @@ public class RolePermissionsPivotModel
 
     public bool NationalAdmin { get; set; }
     public bool RegionalAdmin { get; set; }
-    public bool Proctor { get; set; }
+    public bool Judge { get; set; }
     public bool CheckIn { get; set; }
 
     public string NationalAdminIcon { get; set; }
@@ -23,8 +23,8 @@ public class RolePermissionsPivotModel
     public string RegionalAdminIcon { get; set; }
     public string RegionalAdminColor { get; set; }
 
-    public string ProctorIcon { get; set; }
-    public string ProctorColor { get; set; }
+    public string JudgeIcon { get; set; }
+    public string JudgeColor { get; set; }
 
     public string CheckInIcon { get; set; }
     public string CheckInColor { get; set; }

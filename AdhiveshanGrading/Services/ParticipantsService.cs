@@ -4,7 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
-    Task<ParticipantModel> GetParticipantForProctoring(int misId, string skillCategory, int proctorUserId);
+    Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -28,7 +28,7 @@ public class ParticipantsService : BaseService, IParticipantsService
         return entity?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetParticipantForProctoring(int misId, string skillCategory, int proctorUserId)
+    public async Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId)
     {
         // Get participant by MIS Id
         var participant = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
@@ -44,27 +44,27 @@ public class ParticipantsService : BaseService, IParticipantsService
         if (skill == "Emcee" && !participant.Emcee_Category.Contains(category))
             throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
 
-        // Get Proctor
-        var proctorUser = await _usersCollection.Find(item => item.UserId == proctorUserId).FirstOrDefaultAsync();
-        if (proctorUser == null)
-            throw new ApplicationException($"Proctor not found");
+        // Get Judge
+        var judgeUser = await _usersCollection.Find(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
+        if (judgeUser == null)
+            throw new ApplicationException($"Judge not found");
 
-        // Proctor assigned Genders
-        if (!proctorUser.AssignedGenders.Contains(participant.Gender))
-            throw new ApplicationException($"Proctor {proctorUser.FullName} is not now allowed to do proctoring for {participant.Gender} gender");
+        // Judge assigned Genders
+        if (!judgeUser.AssignedGenders.Contains(participant.Gender))
+            throw new ApplicationException($"Judge {judgeUser.FullName} is not now allowed to do judgeing for {participant.Gender} gender");
 
-        // Proctor Events
-        if (!proctorUser.AssignedEventIds.Any())
-            throw new ApplicationException($"Proctor {proctorUser.FullName} is not assigned any Competition Event");
+        // Judge Events
+        if (!judgeUser.AssignedEventIds.Any())
+            throw new ApplicationException($"Judge {judgeUser.FullName} is not assigned any Competition Event");
 
         // Active Events
-        var events = await _competitionEventsCollection.Find(item => proctorUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
+        var events = await _competitionEventsCollection.Find(item => judgeUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
         if (!events.Any())
-            throw new ApplicationException($"Proctor {proctorUser.FullName}'s assigned Competition Events are Not Active");
+            throw new ApplicationException($"Judge {judgeUser.FullName}'s assigned Competition Events are Not Active");
 
         // Event Center vs Participant Center
         if (!events.SelectMany(e => e.Centers).Contains(participant.Center))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center {participant.Center} is not matching with proctor's assigned events' center");
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center {participant.Center} is not matching with judge's assigned events' center");
 
         return participant?.Map<ParticipantModel>(mapper);
     }

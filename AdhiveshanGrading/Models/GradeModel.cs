@@ -6,7 +6,7 @@ public class GradeModel : ModelBase
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
     public decimal? Score { get; set; }
-    public int? ProctorUserId { get; set; }
+    public int? JudgeUserId { get; set; }
 
     // ------------
     public ParticipantModel Participant { get; set; }
@@ -18,7 +18,7 @@ public class GradeModel : ModelBase
     public string Category { get; set; }
     public string Color { get; set; }
     public string SkillWithCategory => $"{Skill} : {Category}";
-    public string ProctorName { get; set; }
+    public string JudgeName { get; set; }
 }
 
 public class GradeUpdateModel : ModelBase
@@ -26,5 +26,5 @@ public class GradeUpdateModel : ModelBase
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
     public decimal? Score { get; set; }
-    public int? ProctorUserId { get; set; }
+    public int? JudgeUserId { get; set; }
 }

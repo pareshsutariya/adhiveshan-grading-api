@@ -14,7 +14,7 @@ public class GradingTopic : MongoDBEntity
     [BsonIgnoreIfNull]
     public List<decimal> WeightageOptions { get; set; }
 
-    public int RequiredProctors { get; set; }
+    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }

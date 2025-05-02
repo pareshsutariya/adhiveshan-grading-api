@@ -11,15 +11,15 @@ public class GradesController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("GetForParticipantAndProctor/{misId}/{skillCategory}/{proctorUserId}")]
-    public async Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId)
-        => await _service.GetForParticipantAndProctor(misId, skillCategory, proctorUserId);
+    [HttpGet("GetForParticipantAndJudge/{misId}/{skillCategory}/{judgeUserId}")]
+    public async Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId)
+        => await _service.GetForParticipantAndJudge(misId, skillCategory, judgeUserId);
 
-    [HttpGet("GetGradedParticipantsForProctor/{proctorUserId}")]
-    public async Task<List<GradeModel>> GetGradedParticipantsForProctor(int proctorUserId)
-        => await _service.GetGradedParticipantsForProctor(proctorUserId);
+    [HttpGet("GetGradedParticipantsForJudge/{judgeUserId}")]
+    public async Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId)
+        => await _service.GetGradedParticipantsForJudge(judgeUserId);
 
     [HttpPost]
-    public async Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel model) =>
-        await _service.AddOrUpdateForParticipantAndProctor(model);
+    public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel model) =>
+        await _service.AddOrUpdateForParticipantAndJudge(model);
 }

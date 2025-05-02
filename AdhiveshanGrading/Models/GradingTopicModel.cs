@@ -13,7 +13,7 @@ public class GradingTopicModel : ModelBase
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
-    public int RequiredProctors { get; set; }
+    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 
@@ -35,7 +35,7 @@ public class GradingTopicCreateModel : ModelBase
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
-    public int RequiredProctors { get; set; }
+    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }
@@ -53,7 +53,7 @@ public class GradingTopicUpdateModel : ModelBase
     public int Round { get; set; }
 
     public List<decimal> WeightageOptions { get; set; }
-    public int RequiredProctors { get; set; }
+    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }

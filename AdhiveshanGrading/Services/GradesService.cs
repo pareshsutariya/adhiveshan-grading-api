@@ -2,9 +2,9 @@ namespace AdhiveshanGrading.Services;
 
 public interface IGradesService
 {
-    Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId);
-    Task<List<GradeModel>> GetGradedParticipantsForProctor(int proctorUserId);
-    Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel);
+    Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId);
+    Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId);
+    Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel);
 }
 
 public class GradesService : BaseService, IGradesService
@@ -24,7 +24,7 @@ public class GradesService : BaseService, IGradesService
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
     }
 
-    public async Task<List<GradeModel>> GetForParticipantAndProctor(int misId, string skillCategory, int proctorUserId)
+    public async Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId)
     {
         var result = new List<GradeModel> { };
 
@@ -53,7 +53,7 @@ public class GradesService : BaseService, IGradesService
         }
 
         // Participant Grades for the Skill Category
-        var entities = await _GradesCollection.Find(item => item.MISId == misId && item.ProctorUserId == proctorUserId).ToListAsync();
+        var entities = await _GradesCollection.Find(item => item.MISId == misId && item.JudgeUserId == judgeUserId).ToListAsync();
         // if (!entities.Any())
         //     return result;
 
@@ -80,7 +80,7 @@ public class GradesService : BaseService, IGradesService
             {
                 model.GradeId = entity.GradeId;
                 model.Score = entity.Score;
-                model.ProctorUserId = entity.ProctorUserId;
+                model.JudgeUserId = entity.JudgeUserId;
             }
 
             result.Add(model);
@@ -89,13 +89,13 @@ public class GradesService : BaseService, IGradesService
         return result.OrderBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
     }
 
-    public async Task<List<GradeModel>> GetGradedParticipantsForProctor(int proctorUserId)
+    public async Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId)
     {
-        // Proctor
-        var proctor = await _UsersCollection.Find<User>(item => item.UserId == proctorUserId).FirstOrDefaultAsync();
+        // Judge
+        var judge = await _UsersCollection.Find<User>(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
 
-        // Graded Participants For proctor
-        var entities = await _GradesCollection.Find(item => item.ProctorUserId == proctorUserId).ToListAsync();
+        // Graded Participants For judge
+        var entities = await _GradesCollection.Find(item => item.JudgeUserId == judgeUserId).ToListAsync();
 
         var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
         if (!models.Any())
@@ -131,18 +131,18 @@ public class GradesService : BaseService, IGradesService
 
             item.Participant = participant?.Map<ParticipantModel>(mapper);
 
-            item.ProctorName = proctor?.FullName;
+            item.JudgeName = judge?.FullName;
         }
 
         return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
     }
 
-    public async Task<GradeModel> AddOrUpdateForParticipantAndProctor(GradeUpdateModel updateModel)
+    public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel)
     {
         var entity = await _GradesCollection.Find(item =>
                 item.MISId == updateModel.MISId &&
                 item.GradingTopicId == updateModel.GradingTopicId &&
-                item.ProctorUserId == updateModel.ProctorUserId)
+                item.JudgeUserId == updateModel.JudgeUserId)
             .FirstOrDefaultAsync();
 
         if (entity == null)
@@ -155,7 +155,7 @@ public class GradesService : BaseService, IGradesService
                 GradeId = (maxId.Value + 1),
                 MISId = updateModel.MISId,
                 GradingTopicId = updateModel.GradingTopicId,
-                ProctorUserId = updateModel.ProctorUserId,
+                JudgeUserId = updateModel.JudgeUserId,
                 Score = updateModel.Score
             };
 

@@ -10,9 +10,9 @@ public static class RolePermissionsService
     public const string Users_RegionalAdmins_Add = "Users: Regional Admins: Add";
     public const string Users_RegionalAdmins_Update = "Users: Regional Admins: Update";
 
-    public const string Users_Proctors_View = "Users: Proctors: View";
-    public const string Users_Proctors_Add = "Users: Proctors: Add";
-    public const string Users_Proctors_Update = "Users: Proctors: Update";
+    public const string Users_Judges_View = "Users: Judges: View";
+    public const string Users_Judges_Add = "Users: Judges: Add";
+    public const string Users_Judges_Update = "Users: Judges: Update";
 
     public const string Users_CheckIns_View = "Users: Check Ins: View";
     public const string Users_CheckIns_Add = "Users: Check Ins: Add";
@@ -74,9 +74,9 @@ public static class RolePermissionsService
                 Users_RegionalAdmins_Add,
                 Users_RegionalAdmins_Update,
 
-                Users_Proctors_View,
-                Users_Proctors_Add,
-                Users_Proctors_Update,
+                Users_Judges_View,
+                Users_Judges_Add,
+                Users_Judges_Update,
 
                 Users_CheckIns_View,
                 Users_CheckIns_Add,
@@ -99,9 +99,9 @@ public static class RolePermissionsService
                 Events_View,
                 Events_Update,
 
-                Users_Proctors_View,
-                Users_Proctors_Add,
-                Users_Proctors_Update,
+                Users_Judges_View,
+                Users_Judges_Add,
+                Users_Judges_Update,
 
                 Users_CheckIns_View,
                 Users_CheckIns_Add,
@@ -109,9 +109,9 @@ public static class RolePermissionsService
             }
         };
 
-        var proctorRole = new RolePermissionsModel
+        var judgeRole = new RolePermissionsModel
         {
-            RoleName = "Proctor",
+            RoleName = "Judge",
             Icon = "fa-solid fa-user-clock",
             Color = "black",
             Permissions = new List<string>
@@ -138,7 +138,7 @@ public static class RolePermissionsService
         var roles = new List<RolePermissionsModel>();
         roles.Add(nationalAdminRole);
         roles.Add(regionalAdminRole);
-        roles.Add(proctorRole);
+        roles.Add(judgeRole);
         roles.Add(checkInRole);
 
         return roles;
@@ -172,11 +172,11 @@ public static class RolePermissionsService
                     pivot.RegionalAdminColor = model.Color;
                     pivot.RegionalAdminIcon = model.Icon;
                 }
-                else if (model.RoleName == "Proctor")
+                else if (model.RoleName == "Judge")
                 {
-                    pivot.Proctor = true;
-                    pivot.ProctorColor = model.Color;
-                    pivot.ProctorIcon = model.Icon;
+                    pivot.Judge = true;
+                    pivot.JudgeColor = model.Color;
+                    pivot.JudgeIcon = model.Icon;
                 }
                 else if (model.RoleName == "Check In")
                 {
