@@ -68,7 +68,7 @@ public class GradesService : BaseService, IGradesService
                 // ----
                 TopicName = topic.Name,
                 Sequence = topic.Sequence,
-                WeightageOptions = topic.WeightageOptions,
+                MaximumMarks = topic.MaximumMarks,
 
                 Skill = skillCategoryEntity?.Skill,
                 Category = skillCategoryEntity?.Category,

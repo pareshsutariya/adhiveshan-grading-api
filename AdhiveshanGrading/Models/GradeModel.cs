@@ -12,7 +12,7 @@ public class GradeModel : ModelBase
     public ParticipantModel Participant { get; set; }
     public string TopicName { get; set; }
     public int Sequence { get; set; }
-    public List<decimal> WeightageOptions { get; set; }
+    public decimal MaximumMarks { get; set; }
 
     public string Skill { get; set; }
     public string Category { get; set; }

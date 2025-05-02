@@ -11,8 +11,7 @@ public class GradingTopic : MongoDBEntity
 
     public int Round { get; set; }
 
-    [BsonIgnoreIfNull]
-    public List<decimal> WeightageOptions { get; set; }
+    public decimal MaximumMarks { get; set; }
 
     public int RequiredJudges { get; set; }
 
