@@ -5,7 +5,7 @@ public class GradeModel : ModelBase
     public int GradeId { get; set; }
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
-    public decimal? Score { get; set; }
+    public decimal? Marks { get; set; }
     public int? JudgeUserId { get; set; }
 
     // ------------
@@ -25,6 +25,6 @@ public class GradeUpdateModel : ModelBase
 {
     public int MISId { get; set; }
     public int GradingTopicId { get; set; }
-    public decimal? Score { get; set; }
+    public decimal? Marks { get; set; }
     public int? JudgeUserId { get; set; }
 }

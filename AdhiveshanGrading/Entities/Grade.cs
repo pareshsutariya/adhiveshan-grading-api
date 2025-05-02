@@ -8,7 +8,7 @@ public class Grade : MongoDBEntity
     public int GradingTopicId { get; set; }
 
     [BsonIgnoreIfNull]
-    public decimal? Score { get; set; }
+    public decimal? Marks { get; set; }
 
     [BsonIgnoreIfNull]
     public int? JudgeUserId { get; set; }

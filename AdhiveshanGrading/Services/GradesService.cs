@@ -79,7 +79,7 @@ public class GradesService : BaseService, IGradesService
             if (entity != null)
             {
                 model.GradeId = entity.GradeId;
-                model.Score = entity.Score;
+                model.Marks = entity.Marks;
                 model.JudgeUserId = entity.JudgeUserId;
             }
 
@@ -156,14 +156,14 @@ public class GradesService : BaseService, IGradesService
                 MISId = updateModel.MISId,
                 GradingTopicId = updateModel.GradingTopicId,
                 JudgeUserId = updateModel.JudgeUserId,
-                Score = updateModel.Score
+                Marks = updateModel.Marks
             };
 
             _GradesCollection.InsertOne(entity);
         }
         else
         {
-            entity.Score = updateModel.Score;
+            entity.Marks = updateModel.Marks;
             _GradesCollection.ReplaceOne(item => item.GradeId == entity.GradeId, entity);
         }
 
