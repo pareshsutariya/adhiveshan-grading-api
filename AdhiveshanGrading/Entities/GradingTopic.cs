@@ -9,11 +9,7 @@ public class GradingTopic : MongoDBEntity
 
     public int Sequence { get; set; }
 
-    public int Round { get; set; }
-
     public decimal MaximumMarks { get; set; }
-
-    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }

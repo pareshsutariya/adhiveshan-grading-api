@@ -10,10 +10,7 @@ public class GradingTopicModel : ModelBase
     public string Description { get; set; }
     public int Sequence { get; set; }
 
-    public int Round { get; set; }
-
     public decimal MaximumMarks { get; set; }
-    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 
@@ -32,10 +29,7 @@ public class GradingTopicCreateModel : ModelBase
     public string Description { get; set; }
     public int Sequence { get; set; }
 
-    public int Round { get; set; }
-
     public decimal MaximumMarks { get; set; }
-    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }
@@ -50,10 +44,7 @@ public class GradingTopicUpdateModel : ModelBase
     public string Description { get; set; }
     public int Sequence { get; set; }
 
-    public int Round { get; set; }
-
     public decimal MaximumMarks { get; set; }
-    public int RequiredJudges { get; set; }
 
     public string Status { get; set; }
 }
