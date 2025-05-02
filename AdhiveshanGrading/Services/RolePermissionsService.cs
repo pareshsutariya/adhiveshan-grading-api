@@ -113,13 +113,24 @@ public static class RolePermissionsService
         {
             RoleName = "Judge",
             Icon = "fa-solid fa-user-clock",
-            Color = "black",
+            Color = "Chocolate",
             Permissions = new List<string>
             {
                 Skill_Categories_View,
                 Grading_Participants_Search_Participants,
                 Grading_Participants_Grade_Participants,
                 Grading_Participants_View_Participants_Grade
+            }
+        };
+
+        var resultCommitteeRole = new RolePermissionsModel
+        {
+            RoleName = "Result Committee",
+            Icon = "fa-solid fa-square-poll-vertical",
+            Color = "purple",
+            Permissions = new List<string>
+            {
+                Reports_Grading_Report,
             }
         };
 
@@ -139,6 +150,7 @@ public static class RolePermissionsService
         roles.Add(nationalAdminRole);
         roles.Add(regionalAdminRole);
         roles.Add(judgeRole);
+        roles.Add(resultCommitteeRole);
         roles.Add(checkInRole);
 
         return roles;
