@@ -21,6 +21,14 @@ public class ParticipantsController : ControllerBase
     public async Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId)
         => await _service.GetParticipantForJudging(misId, skillCategory, judgeUserId);
 
+    [HttpPost("updateHostCenter")]
+    public async Task<ActionResult<ParticipantModel>> UpdateHostCenter(ParticipantUpdateHostCenterModel model)
+    {
+        var result = await _service.UpdateHostCenter(model);
+
+        return result;
+    }
+
     [HttpPost("import")]
     public async Task<ActionResult<List<ParticipantModel>>> Import(List<ParticipantModel> models)
     {

@@ -14,6 +14,9 @@ public class Participant : MongoDBEntity
     public string Center { get; set; }
 
     [BsonIgnoreIfNull]
+    public string HostCenter { get; set; }
+
+    [BsonIgnoreIfNull]
     public string Zone { get; set; }
 
     [BsonIgnoreIfNull]

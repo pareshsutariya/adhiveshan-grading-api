@@ -5,6 +5,7 @@ public interface IParticipantsService
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
     Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId);
+    Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
 
@@ -62,9 +63,9 @@ public class ParticipantsService : BaseService, IParticipantsService
         if (!events.Any())
             throw new ApplicationException($"Judge {judgeUser.FullName}'s assigned Competition Events are Not Active");
 
-        // Event Center vs Participant Center
-        if (!events.SelectMany(e => e.Centers).Contains(participant.Center))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center {participant.Center} is not matching with judge's assigned events' center");
+        // Event Center vs Participant Center or HostCenter
+        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center/host center {participant.Center}/{participant.HostCenter ?? ""} is not matching with judge's assigned events' center");
 
         return participant?.Map<ParticipantModel>(mapper);
     }
@@ -78,6 +79,21 @@ public class ParticipantsService : BaseService, IParticipantsService
                             .ThenBy(c => c.FullName).ToList();
 
         return models;
+    }
+
+    public async Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model)
+    {
+        var entity = await _participantsCollection.Find(item => item.MISId == model.MISId).FirstOrDefaultAsync();
+
+        if (entity == null)
+            throw new ApplicationException($"Participant not found for the given MIS Id: {model.MISId}");
+
+        entity.HostCenter = model.HostCenter;
+
+        _participantsCollection.ReplaceOne(item => item.MISId == model.MISId, entity);
+
+        return entity.Map<ParticipantModel>(mapper);
+
     }
 
     public async Task<List<ParticipantModel>> Import(List<ParticipantModel> models)
