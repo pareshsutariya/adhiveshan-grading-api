@@ -1,8 +1,10 @@
+using System.Linq;
+
 namespace AdhiveshanGrading.Services;
 
 public interface IUsersService
 {
-    Task<List<UserModel>> GetUsersForLoginUser();
+    Task<List<UserModel>> GetUsersForLoginUser(string loginUserBapsId);
     Task<UserModel> Get(int id);
     UserModel Create(UserCreateModel createModel);
     void Update(int id, UserUpdateModel updateModel);
@@ -21,11 +23,27 @@ public class UsersService : BaseService, IUsersService
         _EventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
     }
 
-    public async Task<List<UserModel>> GetUsersForLoginUser()
+    public async Task<List<UserModel>> GetUsersForLoginUser(string loginUserBapsId)
     {
-        var entities = await _UsersCollection.Find(item => true).ToListAsync();
+        var loginUser = await _UsersCollection.Find(item => item.BAPSId == loginUserBapsId).FirstOrDefaultAsync();
 
+        if (loginUser == null)
+            throw new ApplicationException($"User not found for the given BAPS Id: {loginUserBapsId}");
+
+        if (!loginUser.AssignedRoles.Any())
+            throw new ApplicationException($"No any role assigned to login user {loginUser.FullName}");
+
+        var entities = await _UsersCollection.Find(item => true).ToListAsync();
         var models = entities.Select(c => c.Map<UserModel>(mapper)).OrderBy(c => c.FullName).ToList();
+
+        if (!loginUser.AssignedRoles.Contains("National Admin"))
+        {
+            // If login user is not a National Admin, filter for gender
+            models = models.Where(c => loginUser.AssignedGenders.Intersect(c.AssignedGenders).Any()).Tolist();
+
+            // If login user is not a National Admin, filter for assinged events
+            models = models.Where(c => loginUser.AssignedEventIds.Intersect(c.AssignedEventIds).Any()).Tolist();
+        }
 
         var events = await _EventsCollection.Find(item => true).ToListAsync();
         foreach (var user in models)
