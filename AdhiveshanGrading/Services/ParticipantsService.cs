@@ -4,7 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
-    Task<ParticipantModel> GetParticipantForJudging(int misId, int judgeUserId);
+    Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
@@ -29,12 +29,12 @@ public class ParticipantsService : BaseService, IParticipantsService
         return entity?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetParticipantForJudging(int misId, int judgeUserId)
+    public async Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId)
     {
         // Get participant by MIS Id
-        var participant = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
+        var participant = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
         if (participant == null)
-            throw new ApplicationException($"Participant not found for the given MIS Id: {misId}");
+            throw new ApplicationException($"Participant not found for the given BAPS Id: {bapsId}");
 
         // Get Judge
         var judgeUser = await _usersCollection.Find(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
@@ -63,8 +63,9 @@ public class ParticipantsService : BaseService, IParticipantsService
                 judgeSkillsMatchedWithParticipantSkills = true;
         }
 
-        if (judgeSkillsMatchedWithParticipantSkills == false)
-            throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
+        // // TODO: Need to uncomment below
+        // if (judgeSkillsMatchedWithParticipantSkills == false)
+        //     throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
 
         // Judge Events
         if (!judgeUser.AssignedEventIds.Any())
@@ -75,9 +76,10 @@ public class ParticipantsService : BaseService, IParticipantsService
         if (!events.Any())
             throw new ApplicationException($"Judge {judgeUser.FullName}'s assigned Competition Events are Not Active");
 
-        // Event Center vs Participant Center or HostCenter
-        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center/host center {participant.Center}/{participant.HostCenter ?? ""} is not matching with judge's assigned events' center");
+        // TODO: Need to uncomment below
+        // // Event Center vs Participant Center or HostCenter
+        // if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
+        //     throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center/host center {participant.Center}/{participant.HostCenter ?? ""} is not matching with judge's assigned events' center");
 
         return participant?.Map<ParticipantModel>(mapper);
     }

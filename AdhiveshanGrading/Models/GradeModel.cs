@@ -3,7 +3,7 @@ namespace AdhiveshanGrading.Models;
 public class GradeModel : ModelBase
 {
     public int GradeId { get; set; }
-    public int MISId { get; set; }
+    public string BAPSId { get; set; }
     public int GradingTopicId { get; set; }
     public decimal? Marks { get; set; }
     public int? JudgeUserId { get; set; }
@@ -23,7 +23,7 @@ public class GradeModel : ModelBase
 
 public class GradeUpdateModel : ModelBase
 {
-    public int MISId { get; set; }
+    public string BAPSId { get; set; }
     public int GradingTopicId { get; set; }
     public decimal? Marks { get; set; }
     public int? JudgeUserId { get; set; }

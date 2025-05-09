@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Services;
 
 public interface IGradesService
 {
-    Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId);
+    Task<List<GradeModel>> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId);
     Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId);
     Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel);
 }
@@ -24,7 +24,7 @@ public class GradesService : BaseService, IGradesService
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
     }
 
-    public async Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId)
+    public async Task<List<GradeModel>> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId)
     {
         var result = new List<GradeModel> { };
 
@@ -53,7 +53,7 @@ public class GradesService : BaseService, IGradesService
         }
 
         // Participant Grades for the Skill Category
-        var entities = await _GradesCollection.Find(item => item.MISId == misId && item.JudgeUserId == judgeUserId).ToListAsync();
+        var entities = await _GradesCollection.Find(item => item.BAPSId == bapsId && item.JudgeUserId == judgeUserId).ToListAsync();
         // if (!entities.Any())
         //     return result;
 
@@ -63,7 +63,7 @@ public class GradesService : BaseService, IGradesService
         {
             var model = new GradeModel
             {
-                MISId = misId,
+                BAPSId = bapsId,
                 GradingTopicId = topic.GradingTopicId,
                 // ----
                 TopicName = topic.Name,
@@ -127,7 +127,7 @@ public class GradesService : BaseService, IGradesService
                 }
             }
 
-            var participant = await _participantsCollection.Find(c => c.MISId == item.MISId).FirstOrDefaultAsync();
+            var participant = await _participantsCollection.Find(c => c.BAPSId == item.BAPSId).FirstOrDefaultAsync();
 
             item.Participant = participant?.Map<ParticipantModel>(mapper);
 
@@ -140,7 +140,7 @@ public class GradesService : BaseService, IGradesService
     public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel)
     {
         var entity = await _GradesCollection.Find(item =>
-                item.MISId == updateModel.MISId &&
+                item.BAPSId == updateModel.BAPSId &&
                 item.GradingTopicId == updateModel.GradingTopicId &&
                 item.JudgeUserId == updateModel.JudgeUserId)
             .FirstOrDefaultAsync();
@@ -153,7 +153,7 @@ public class GradesService : BaseService, IGradesService
             entity = new Grade
             {
                 GradeId = (maxId.Value + 1),
-                MISId = updateModel.MISId,
+                BAPSId = updateModel.BAPSId,
                 GradingTopicId = updateModel.GradingTopicId,
                 JudgeUserId = updateModel.JudgeUserId,
                 Marks = updateModel.Marks

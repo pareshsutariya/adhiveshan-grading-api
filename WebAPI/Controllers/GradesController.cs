@@ -11,9 +11,9 @@ public class GradesController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("GetForParticipantAndJudge/{misId}/{skillCategory}/{judgeUserId}")]
-    public async Task<List<GradeModel>> GetForParticipantAndJudge(int misId, string skillCategory, int judgeUserId)
-        => await _service.GetForParticipantAndJudge(misId, skillCategory, judgeUserId);
+    [HttpGet("GetForParticipantAndJudge/{bapsId}/{skillCategory}/{judgeUserId}")]
+    public async Task<List<GradeModel>> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId)
+        => await _service.GetForParticipantAndJudge(bapsId, skillCategory, judgeUserId);
 
     [HttpGet("GetGradedParticipantsForJudge/{judgeUserId}")]
     public async Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId)
