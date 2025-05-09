@@ -14,6 +14,10 @@ public class CompetitionEventsController : ControllerBase
     [HttpGet]
     public async Task<List<CompetitionEventModel>> Get() => await _service.Get();
 
+    [HttpGet("GetEventsForLoginUser/{loginUserBapsId}")]
+    public async Task<List<CompetitionEventModel>> GetEventsForLoginUser(string loginUserBapsId)
+        => await _service.GetEventsForLoginUser(loginUserBapsId);
+
     [HttpGet("{id}")]
     public async Task<CompetitionEventModel> Get(int id) => await _service.Get(id);
 
