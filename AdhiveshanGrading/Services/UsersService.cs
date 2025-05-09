@@ -36,13 +36,17 @@ public class UsersService : BaseService, IUsersService
         var entities = await _UsersCollection.Find(item => true).ToListAsync();
         var models = entities.Select(c => c.Map<UserModel>(mapper)).OrderBy(c => c.FullName).ToList();
 
+        // If login user is not a National Admin
         if (!loginUser.AssignedRoles.Contains("National Admin"))
         {
-            // If login user is not a National Admin, filter for gender
-            models = models.Where(c => loginUser.AssignedGenders.Intersect(c.AssignedGenders).Any()).Tolist();
-
-            // If login user is not a National Admin, filter for assinged events
-            models = models.Where(c => loginUser.AssignedEventIds.Intersect(c.AssignedEventIds).Any()).Tolist();
+            models = entities.Where(c =>
+                                // If login user is not a National Admin, filter for gender
+                                loginUser.AssignedGenders.Intersect(c.AssignedGenders).Any() &&
+                                // If login user is not a National Admin, filter for assinged events
+                                loginUser.AssignedEventIds.Intersect(c.AssignedEventIds).Any())
+                             .Select(c => c.Map<UserModel>(mapper))
+                             .OrderBy(c => c.FullName)
+                             .ToList();
         }
 
         var events = await _EventsCollection.Find(item => true).ToListAsync();
