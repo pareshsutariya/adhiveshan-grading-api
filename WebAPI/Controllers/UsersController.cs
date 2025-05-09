@@ -12,7 +12,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<UserModel>> Get() => await _service.Get();
+    public async Task<List<UserModel>> Get() => await _service.GetUsersForLoginUser();
 
     [HttpGet("{id}")]
     public async Task<UserModel> Get(int id) => await _service.Get(id);

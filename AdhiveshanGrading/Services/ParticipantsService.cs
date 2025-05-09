@@ -4,6 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
+    Task<ParticipantModel> GetByBAPSId(string bapsId);
     Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
@@ -25,6 +26,13 @@ public class ParticipantsService : BaseService, IParticipantsService
     public async Task<ParticipantModel> GetByMISId(int misId)
     {
         var entity = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
+
+        return entity?.Map<ParticipantModel>(mapper);
+    }
+
+    public async Task<ParticipantModel> GetByBAPSId(string bapsId)
+    {
+        var entity = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
 
         return entity?.Map<ParticipantModel>(mapper);
     }

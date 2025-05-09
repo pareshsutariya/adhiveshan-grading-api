@@ -2,7 +2,7 @@ namespace AdhiveshanGrading.Services;
 
 public interface IUsersService
 {
-    Task<List<UserModel>> Get();
+    Task<List<UserModel>> GetUsersForLoginUser();
     Task<UserModel> Get(int id);
     UserModel Create(UserCreateModel createModel);
     void Update(int id, UserUpdateModel updateModel);
@@ -21,7 +21,7 @@ public class UsersService : BaseService, IUsersService
         _EventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
     }
 
-    public async Task<List<UserModel>> Get()
+    public async Task<List<UserModel>> GetUsersForLoginUser()
     {
         var entities = await _UsersCollection.Find(item => true).ToListAsync();
 
@@ -49,7 +49,7 @@ public class UsersService : BaseService, IUsersService
 
     public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)
     {
-        var userModel = (await _UsersCollection.Find(item => item.MISId.ToLower() == username.ToLower() && item.Password == password)
+        var userModel = (await _UsersCollection.Find(item => item.BAPSId.ToLower() == username.ToLower() && item.Password == password)
                                                .FirstOrDefaultAsync()
                         )?.Map<UserModel>(mapper);
 
