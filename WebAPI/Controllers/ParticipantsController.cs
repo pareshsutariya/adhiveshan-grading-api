@@ -17,9 +17,9 @@ public class ParticipantsController : ControllerBase
     [HttpGet("getByMISId/{misId}")]
     public async Task<ParticipantModel> GetByMISId(int misId) => await _service.GetByMISId(misId);
 
-    [HttpGet("GetParticipantForJudging/{misId}/{skillCategory}/{judgeUserId}")]
-    public async Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId)
-        => await _service.GetParticipantForJudging(misId, skillCategory, judgeUserId);
+    [HttpGet("GetParticipantForJudging/{misId}/{judgeUserId}")]
+    public async Task<ParticipantModel> GetParticipantForJudging(int misId, int judgeUserId)
+        => await _service.GetParticipantForJudging(misId, judgeUserId);
 
     [HttpPost("updateHostCenter")]
     public async Task<ActionResult<ParticipantModel>> UpdateHostCenter(ParticipantUpdateHostCenterModel model)

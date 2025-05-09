@@ -4,7 +4,7 @@ public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
-    Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId);
+    Task<ParticipantModel> GetParticipantForJudging(int misId, int judgeUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
@@ -29,21 +29,12 @@ public class ParticipantsService : BaseService, IParticipantsService
         return entity?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetParticipantForJudging(int misId, string skillCategory, int judgeUserId)
+    public async Task<ParticipantModel> GetParticipantForJudging(int misId, int judgeUserId)
     {
         // Get participant by MIS Id
         var participant = await _participantsCollection.Find(item => item.MISId == misId).FirstOrDefaultAsync();
         if (participant == null)
             throw new ApplicationException($"Participant not found for the given MIS Id: {misId}");
-
-        var skill = skillCategory.Split(":")[0].Trim();
-        var category = skillCategory.Split(":")[1].Trim();
-
-        // Validate participant skill
-        if (skill == "Pravachan" && !participant.Speech_Pravachan_Category.Contains(category))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
-        if (skill == "Emcee" && !participant.Emcee_Category.Contains(category))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' has not participated in {skillCategory}");
 
         // Get Judge
         var judgeUser = await _usersCollection.Find(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
@@ -52,7 +43,28 @@ public class ParticipantsService : BaseService, IParticipantsService
 
         // Judge assigned Genders
         if (!judgeUser.AssignedGenders.Contains(participant.Gender))
-            throw new ApplicationException($"Judge {judgeUser.FullName} is not now allowed to do judgeing for {participant.Gender} gender");
+            throw new ApplicationException($"Judge {judgeUser.FullName} is not now allowed to do judging for {participant.Gender} gender");
+
+        if (judgeUser.AssignedSkillCategories == null || !judgeUser.AssignedSkillCategories.Any())
+            throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
+
+        var judgeSkillsMatchedWithParticipantSkills = false;
+
+        // Validate participant skill
+        foreach (var judgeSkillCategory in judgeUser.AssignedSkillCategories!)
+        {
+            var skill = judgeSkillCategory.Split(":")[0].Trim();
+            var category = judgeSkillCategory.Split(":")[1].Trim();
+
+            if (skill == "Pravachan" && participant.Speech_Pravachan_Category.Contains(category))
+                judgeSkillsMatchedWithParticipantSkills = true;
+
+            if (skill == "Emcee" && participant.Emcee_Category.Contains(category))
+                judgeSkillsMatchedWithParticipantSkills = true;
+        }
+
+        if (judgeSkillsMatchedWithParticipantSkills == false)
+            throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
 
         // Judge Events
         if (!judgeUser.AssignedEventIds.Any())
