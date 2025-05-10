@@ -75,6 +75,12 @@ public class UsersService : BaseService, IUsersService
                                                .FirstOrDefaultAsync()
                         )?.Map<UserModel>(mapper);
 
+        if (userModel == null)
+            throw new ApplicationException($"User not found for the given credentials");
+
+        if (userModel.Status != "Active")
+            throw new ApplicationException($"User {userModel.FullName} is not Active");
+
         if (userModel != null && userModel.AssignedRoles.Any())
         {
             userModel.AssignedPermissions = RolePermissionsService.GetRolePermissions()
