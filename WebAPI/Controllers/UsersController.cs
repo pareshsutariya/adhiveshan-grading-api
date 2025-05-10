@@ -46,4 +46,8 @@ public class UsersController : ControllerBase
 
     [HttpGet("GetUserByUsernameAndPassword/{username}/{password}")]
     public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password) => await _service.GetUserByUsernameAndPassword(username, password);
+
+    [HttpPost("JudgesImport/{loginUserBapsId}")]
+    public async Task<ActionResult<bool>> JudgesImport(string loginUserBapsId, List<UserJudgeImport> models)
+        => await _service.JudgesImport(loginUserBapsId, models);
 }

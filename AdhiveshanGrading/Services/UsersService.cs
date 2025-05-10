@@ -10,17 +10,20 @@ public interface IUsersService
     void Update(int id, UserUpdateModel updateModel);
     Task Remove(int id);
     Task<UserModel> GetUserByUsernameAndPassword(string username, string password);
+    Task<bool> JudgesImport(string loginUserBapsId, List<UserJudgeImport> models);
 }
 
 public class UsersService : BaseService, IUsersService
 {
     private readonly IMongoCollection<User> _UsersCollection;
     private readonly IMongoCollection<CompetitionEvent> _EventsCollection;
+    private readonly IMongoCollection<Participant> _participantsCollection;
 
     public UsersService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
     {
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
         _EventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
+        _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
     }
 
     public async Task<List<UserModel>> GetUsersForLoginUser(string loginUserBapsId)
@@ -112,4 +115,66 @@ public class UsersService : BaseService, IUsersService
     public async Task Remove(int id) =>
         await _UsersCollection.UpdateOneAsync(Builders<User>.Filter.Eq(s => s.UserId, id),
                                                  Builders<User>.Update.Set(s => s.Status, "Deleted"));
+
+    public async Task<bool> JudgesImport(string loginUserBapsId, List<UserJudgeImport> models)
+    {
+        var errors = new List<string>();
+
+        var loginUser = await _UsersCollection.Find(item => item.BAPSId == loginUserBapsId).FirstOrDefaultAsync();
+
+        if (loginUser == null)
+            throw new ApplicationException($"User not found for the given BAPS Id: {loginUserBapsId}");
+
+        if (!loginUser.AssignedRoles.Any())
+            throw new ApplicationException($"No any role assigned to login user {loginUser.FullName}");
+
+        var loginUserEvents = await _EventsCollection.Find(item => loginUser.AssignedEventIds.Contains(item.CompetitionEventId)).ToListAsync();
+
+        foreach (var model in models)
+        {
+            var participant = await _participantsCollection.Find(item => item.BAPSId == model.BAPSId).FirstOrDefaultAsync();
+
+            if (participant == null)
+            {
+                errors.Add($"Participant not found for BAPS Id: {model.BAPSId}");
+                continue;
+            }
+
+            if (!loginUser.AssignedGenders.Contains(participant.Gender))
+            {
+                errors.Add($"BAPS Id: {model.BAPSId}. Participant {participant.FirstName} {participant.LastName}'s gender ({participant.Gender}) is not allowed to import");
+                continue;
+            }
+
+            var assignedEvent = loginUserEvents.FirstOrDefault(evt => evt.StartDate.ToString("yyyy-MM-dd") == model.EventDate.ToString("yyyy-MM-dd"));
+            if (assignedEvent == null)
+            {
+                errors.Add($"BAPS Id: {model.BAPSId}. Participant {participant.FirstName} {participant.LastName}. Given Event Date ({model.EventDate.ToString("yyyy-MM-dd")}) is not matching");
+                continue;
+            }
+
+            // Add Judge user
+            Create(new UserCreateModel
+            {
+                BAPSId = participant.BAPSId,
+                Password = participant.BAPSId,
+                FullName = $"{participant.FirstName} {participant.LastName}",
+                Region = participant.Region,
+                Center = participant.Center,
+                Status = "Active",
+                AssignedGenders = new List<string> { participant.Gender },
+                AssignedRoles = new List<string> { "Judge" },
+                AssignedSkillCategories = model.AssignedSkillCategories.Split(",").ToList(),
+                AssignedEventIds = new List<int> { assignedEvent.CompetitionEventId },
+            });
+        }
+
+        if (errors.Count > 0)
+        {
+            throw new ApplicationException(string.Join(" | ", errors));
+        }
+
+        return true;
+
+    }
 }
