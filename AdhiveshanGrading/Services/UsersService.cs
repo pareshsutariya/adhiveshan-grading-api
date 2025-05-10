@@ -159,6 +159,13 @@ public class UsersService : BaseService, IUsersService
                 continue;
             }
 
+            // If user already exists, delete it
+            var existingUser = await _UsersCollection.Find(item => item.BAPSId == participant.BAPSId).FirstOrDefaultAsync();
+            if (existingUser != null)
+            {
+                _UsersCollection.DeleteOne(c => c.UserId == existingUser.UserId);
+            }
+
             // Add Judge user
             Create(new UserCreateModel
             {
@@ -170,7 +177,7 @@ public class UsersService : BaseService, IUsersService
                 Status = "Active",
                 AssignedGenders = new List<string> { participant.Gender },
                 AssignedRoles = new List<string> { "Judge" },
-                AssignedSkillCategories = model.AssignedSkillCategories.Split(",").ToList(),
+                AssignedSkillCategories = model.AssignedSkillCategories.Split(",").Select(c => c.Trim()).ToList(),
                 AssignedEventIds = new List<int> { assignedEvent.CompetitionEventId },
             });
         }
