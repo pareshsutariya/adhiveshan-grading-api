@@ -146,10 +146,16 @@ public class UsersService : BaseService, IUsersService
                 continue;
             }
 
-            var assignedEvent = loginUserEvents.FirstOrDefault(evt => evt.StartDate.ToString("yyyy-MM-dd") == model.EventDate.ToString("yyyy-MM-dd"));
+            if (!DateTime.TryParse(model.EventDate, out DateTime _eventDate))
+            {
+                errors.Add($"BAPS Id: {model.BAPSId}. Participant {participant.FirstName} {participant.LastName}. Given Event Date ({model.EventDate}) is invalid");
+                continue;
+            }
+
+            var assignedEvent = loginUserEvents.FirstOrDefault(evt => evt.StartDate.ToString("yyyy-MM-dd") == _eventDate.ToString("yyyy-MM-dd"));
             if (assignedEvent == null)
             {
-                errors.Add($"BAPS Id: {model.BAPSId}. Participant {participant.FirstName} {participant.LastName}. Given Event Date ({model.EventDate.ToString("yyyy-MM-dd")}) is not matching");
+                errors.Add($"BAPS Id: {model.BAPSId}. Participant {participant.FirstName} {participant.LastName}. Given Event Date ({model.EventDate}) is not matching");
                 continue;
             }
 
