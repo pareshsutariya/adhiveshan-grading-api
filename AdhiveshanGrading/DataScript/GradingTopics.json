@@ -1,0 +1,348 @@
+[{
+  "_id": {
+    "$oid": "682baf71ca5fa37fcc3db212"
+  },
+  "GradingTopicId": 1,
+  "SkillCategoryId": 3,
+  "Name": "પ્રસંગ/દૃષ્ટાંત ચિત્રાત્મક વર્ણન",
+  "Description": null,
+  "Sequence": 1,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bafc9ca5fa37fcc3db215"
+  },
+  "GradingTopicId": 2,
+  "SkillCategoryId": 3,
+  "Name": "વાણીની ગતિ, તીવ્રતા, આરોહ-અવરોહ",
+  "Description": null,
+  "Sequence": 2,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bafd5ca5fa37fcc3db216"
+  },
+  "GradingTopicId": 3,
+  "SkillCategoryId": 3,
+  "Name": "પ્રવાહ  (ઉચ્ચાર, પુનરાવર્તન, અટકીને બોલવું)",
+  "Description": null,
+  "Sequence": 3,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bafecca5fa37fcc3db217"
+  },
+  "GradingTopicId": 4,
+  "SkillCategoryId": 3,
+  "Name": "Body Language + Eye Contact",
+  "Description": null,
+  "Sequence": 4,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682baffbca5fa37fcc3db218"
+  },
+  "GradingTopicId": 5,
+  "SkillCategoryId": 3,
+  "Name": "સમય મર્યાદા",
+  "Description": null,
+  "Sequence": 5,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb009ca5fa37fcc3db219"
+  },
+  "GradingTopicId": 6,
+  "SkillCategoryId": 3,
+  "Name": "સમગ્ર અસર",
+  "Description": null,
+  "Sequence": 6,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb027ca5fa37fcc3db21a"
+  },
+  "GradingTopicId": 7,
+  "SkillCategoryId": 2,
+  "Name": "માળખું",
+  "Description": null,
+  "Sequence": 1,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb035ca5fa37fcc3db21b"
+  },
+  "GradingTopicId": 8,
+  "SkillCategoryId": 2,
+  "Name": "અંગોની સપ્રમાણતા",
+  "Description": null,
+  "Sequence": 2,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb043ca5fa37fcc3db21c"
+  },
+  "GradingTopicId": 9,
+  "SkillCategoryId": 2,
+  "Name": "વિષયને અનુરૂપતા",
+  "Description": null,
+  "Sequence": 3,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb051ca5fa37fcc3db21d"
+  },
+  "GradingTopicId": 10,
+  "SkillCategoryId": 2,
+  "Name": "સાંકળી",
+  "Description": null,
+  "Sequence": 4,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb067ca5fa37fcc3db21e"
+  },
+  "GradingTopicId": 11,
+  "SkillCategoryId": 2,
+  "Name": "પ્રસંગ/દૃષ્ટાંત ચિત્રાત્મક વર્ણન",
+  "Description": null,
+  "Sequence": 5,
+  "MaximumMarks": "15",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb076ca5fa37fcc3db21f"
+  },
+  "GradingTopicId": 12,
+  "SkillCategoryId": 2,
+  "Name": "બોધની રજૂઆત",
+  "Description": null,
+  "Sequence": 6,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb0a9ca5fa37fcc3db220"
+  },
+  "GradingTopicId": 13,
+  "SkillCategoryId": 2,
+  "Name": "વાણીની ગતિ, તીવ્રતા, આરોહ-અવરોહ",
+  "Description": null,
+  "Sequence": 7,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb0bfca5fa37fcc3db221"
+  },
+  "GradingTopicId": 14,
+  "SkillCategoryId": 2,
+  "Name": "પ્રવાહ (ઉચ્ચાર, પુનરાવર્તન, અટકીને બોલવું)",
+  "Description": null,
+  "Sequence": 8,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb0d1ca5fa37fcc3db222"
+  },
+  "GradingTopicId": 15,
+  "SkillCategoryId": 2,
+  "Name": "Body Language + Eye Contact",
+  "Description": null,
+  "Sequence": 9,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb0e7ca5fa37fcc3db223"
+  },
+  "GradingTopicId": 16,
+  "SkillCategoryId": 2,
+  "Name": "સમય મર્યાદા",
+  "Description": null,
+  "Sequence": 10,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb0f3ca5fa37fcc3db224"
+  },
+  "GradingTopicId": 17,
+  "SkillCategoryId": 2,
+  "Name": "સમગ્ર અસર",
+  "Description": null,
+  "Sequence": 11,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb125ca5fa37fcc3db225"
+  },
+  "GradingTopicId": 18,
+  "SkillCategoryId": 1,
+  "Name": "માળખું",
+  "Description": null,
+  "Sequence": 1,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb13eca5fa37fcc3db226"
+  },
+  "GradingTopicId": 19,
+  "SkillCategoryId": 1,
+  "Name": "અંગોની સપ્રમાણતા",
+  "Description": null,
+  "Sequence": 2,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb149ca5fa37fcc3db227"
+  },
+  "GradingTopicId": 20,
+  "SkillCategoryId": 1,
+  "Name": "વિષયને અનુરૂપતા",
+  "Description": null,
+  "Sequence": 3,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb154ca5fa37fcc3db228"
+  },
+  "GradingTopicId": 21,
+  "SkillCategoryId": 1,
+  "Name": "સાંકળી",
+  "Description": null,
+  "Sequence": 4,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb163ca5fa37fcc3db229"
+  },
+  "GradingTopicId": 22,
+  "SkillCategoryId": 1,
+  "Name": "પ્રસંગ/દૃષ્ટાંત ચિત્રાત્મક વર્ણન",
+  "Description": null,
+  "Sequence": 5,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb172ca5fa37fcc3db22a"
+  },
+  "GradingTopicId": 23,
+  "SkillCategoryId": 1,
+  "Name": "પ્રસંગ મનન",
+  "Description": null,
+  "Sequence": 6,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb180ca5fa37fcc3db22b"
+  },
+  "GradingTopicId": 24,
+  "SkillCategoryId": 1,
+  "Name": "બોધની રજૂઆત",
+  "Description": null,
+  "Sequence": 7,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb190ca5fa37fcc3db22c"
+  },
+  "GradingTopicId": 25,
+  "SkillCategoryId": 1,
+  "Name": "વાણીની ગતિ, તીવ્રતા, આરોહ-અવરોહ",
+  "Description": null,
+  "Sequence": 8,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb19fca5fa37fcc3db22d"
+  },
+  "GradingTopicId": 26,
+  "SkillCategoryId": 1,
+  "Name": "પ્રવાહ (ઉચ્ચાર, પુનરાવર્તન, અટકીને બોલવું)",
+  "Description": null,
+  "Sequence": 9,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb1b1ca5fa37fcc3db22e"
+  },
+  "GradingTopicId": 27,
+  "SkillCategoryId": 1,
+  "Name": "Body Language + Eye Contact",
+  "Description": null,
+  "Sequence": 10,
+  "MaximumMarks": "10",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb1c0ca5fa37fcc3db22f"
+  },
+  "GradingTopicId": 28,
+  "SkillCategoryId": 1,
+  "Name": "સમય મર્યાદા",
+  "Description": null,
+  "Sequence": 11,
+  "MaximumMarks": "5",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "682bb1cbca5fa37fcc3db230"
+  },
+  "GradingTopicId": 29,
+  "SkillCategoryId": 1,
+  "Name": "સમગ્ર અસર",
+  "Description": null,
+  "Sequence": 12,
+  "MaximumMarks": "10",
+  "Status": "Active"
+}]
