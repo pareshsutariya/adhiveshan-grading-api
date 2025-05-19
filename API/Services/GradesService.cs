@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace AdhiveshanGrading.Services;
 
 public interface IGradesService
@@ -15,7 +17,7 @@ public class GradesService : BaseService, IGradesService
     private readonly IMongoCollection<User> _UsersCollection;
     private readonly IMongoCollection<Participant> _participantsCollection;
 
-    public GradesService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
+    public GradesService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);

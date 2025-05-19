@@ -1,3 +1,7 @@
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+
 namespace AdhiveshanGrading.Services;
 
 public interface IBaseService { }
@@ -15,10 +19,19 @@ public class BaseService : IBaseService
         this.settings = settings;
     }
 
-    public BaseService(IAdvGradingSettings settings, IMapper mapper)
+    public BaseService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment)
     {
-        var client = new MongoClient(settings.ConnectionString);
-        this.database = client.GetDatabase(settings.DatabaseName);
+        MongoClient client;
+        if (hostingEnvironment.IsDevelopment())
+        {
+            client = new MongoClient(settings.ConnectionString);
+            this.database = client.GetDatabase(settings.DatabaseName);
+        }
+        else
+        {
+            client = new MongoClient(settings.ConnectionString.Replace("DATABASE_CONNECTION_STRING", Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
+            this.database = client.GetDatabase(settings.DatabaseName.Replace("DATABASE_NAME", Environment.GetEnvironmentVariable("DATABASE_NAME")));
+        }
         this.mapper = mapper;
         this.settings = settings;
     }

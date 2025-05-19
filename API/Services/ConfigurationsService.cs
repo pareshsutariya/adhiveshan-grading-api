@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace AdhiveshanGrading.Services;
 
 public interface IConfigurationsService { }
@@ -6,7 +8,7 @@ public class ConfigurationsService : BaseService, IConfigurationsService
 {
     private readonly IMongoCollection<Configuration> _mongoCollection;
 
-    public ConfigurationsService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
+    public ConfigurationsService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _mongoCollection = Database.GetCollection<Configuration>(settings.ConfigurationsCollectionName);
     }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace AdhiveshanGrading.Services;
 
 public interface ICompetitionEventsService
@@ -14,7 +16,7 @@ public class CompetitionEventsService : BaseService, ICompetitionEventsService
     private readonly IMongoCollection<CompetitionEvent> _CompetitionEventsCollection;
     private readonly IMongoCollection<User> _UsersCollection;
 
-    public CompetitionEventsService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
+    public CompetitionEventsService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
 

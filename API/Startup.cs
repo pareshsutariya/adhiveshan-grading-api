@@ -1,10 +1,20 @@
-﻿using AdhiveshanGrading.API.Middlewares;
+﻿using AdhiveshanGrading.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Models;
 
 namespace AdhiveshanGrading.API;
@@ -24,7 +34,32 @@ public class Startup
         // requires using Microsoft.Extensions.Options
         services.AddAutoMapper(typeof(Startup));
 
-        // Adhiveshan
+        #region Auth
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidIssuer = Configuration.GetValue<string>("JwtConfig:issuer"),
+                ValidAudience = Configuration.GetValue<string>("JwtConfig:audiance"),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JwtConfig:key"))),
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+            };
+        });
+        services.AddAuthentication();
+        #endregion
+
+        #region Adhiveshan Services
         services.AddSingleton<IAdvGradingSettings>(sp => sp.GetRequiredService<IOptions<AdvGradingSettings>>().Value);
         services.Configure<AdvGradingSettings>(Configuration.GetSection(nameof(AdvGradingSettings)));
         services.AddSingleton<IUsersService, UsersService>();
@@ -33,14 +68,40 @@ public class Startup
         services.AddSingleton<IGradingCriteriasService, GradingCriteriasService>();
         services.AddSingleton<IGradesService, GradesService>();
         services.AddSingleton<ConfigurationsService>();
+        #endregion
 
         services.AddCors();
         services.AddControllers();
+
+        #region Swagger
+        services.AddSwaggerGen(options =>
+        {
+            var jwtSecurityScheme = new OpenApiSecurityScheme
+            {
+                BearerFormat = "JWT",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = JwtBearerDefaults.AuthenticationScheme,
+                Description = "Enter your JWT Access Token",
+                Reference = new OpenApiReference
+                {
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                    Type = ReferenceType.SecurityScheme,
+                }
+            };
+            options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { jwtSecurityScheme, Array.Empty<string>() }
+            });
+        });
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdhiveshanGrading API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Adhiveshan Grading API", Version = "v1" });
             c.CustomSchemaIds(type => type.ToString());
         });
+        #endregion
 
         services.Configure<FormOptions>(o =>
         {
@@ -89,6 +150,9 @@ public class Startup
         // });
 
         app.UseMiddleware<ExceptionMiddleware>();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace AdhiveshanGrading.Services;
 
 public interface IGradingCriteriasService
@@ -15,7 +17,7 @@ public class GradingCriteriasService : BaseService, IGradingCriteriasService
     private readonly IMongoCollection<GradingCriteria> _GradingCriteriasCollection;
     private readonly IMongoCollection<SkillCategory> _SkillsCollection;
 
-    public GradingCriteriasService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
+    public GradingCriteriasService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _GradingCriteriasCollection = Database.GetCollection<GradingCriteria>(settings.GradingCriteriasCollectionName);
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
