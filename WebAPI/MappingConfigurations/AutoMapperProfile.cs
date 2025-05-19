@@ -11,9 +11,9 @@ public class AutoMapperProfile : Profile
         CreateMap<Entities.User, UserCreateModel>().ReverseMap();
         CreateMap<Entities.User, UserUpdateModel>().ReverseMap();
 
-        CreateMap<Entities.GradingTopic, GradingTopicModel>().ReverseMap();
-        CreateMap<Entities.GradingTopic, GradingTopicCreateModel>().ReverseMap();
-        CreateMap<Entities.GradingTopic, GradingTopicUpdateModel>().ReverseMap();
+        CreateMap<Entities.GradingCriteria, GradingCriteriaModel>().ReverseMap();
+        CreateMap<Entities.GradingCriteria, GradingCriteriaCreateModel>().ReverseMap();
+        CreateMap<Entities.GradingCriteria, GradingCriteriaUpdateModel>().ReverseMap();
 
         CreateMap<Entities.Grade, GradeModel>().ReverseMap();
         CreateMap<Entities.Grade, GradeUpdateModel>().ReverseMap();

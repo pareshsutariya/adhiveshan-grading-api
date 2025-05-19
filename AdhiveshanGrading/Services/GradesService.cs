@@ -10,7 +10,7 @@ public interface IGradesService
 public class GradesService : BaseService, IGradesService
 {
     private readonly IMongoCollection<Grade> _GradesCollection;
-    private readonly IMongoCollection<GradingTopic> _GradingTopicsCollection;
+    private readonly IMongoCollection<GradingCriteria> _GradingCriteriasCollection;
     private readonly IMongoCollection<SkillCategory> _SkillsCollection;
     private readonly IMongoCollection<User> _UsersCollection;
     private readonly IMongoCollection<Participant> _participantsCollection;
@@ -20,7 +20,7 @@ public class GradesService : BaseService, IGradesService
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
         _GradesCollection = Database.GetCollection<Grade>(settings.GradesCollectionName);
-        _GradingTopicsCollection = Database.GetCollection<GradingTopic>(settings.GradingTopicsCollectionName);
+        _GradingCriteriasCollection = Database.GetCollection<GradingCriteria>(settings.GradingCriteriasCollectionName);
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
     }
 
@@ -37,12 +37,12 @@ public class GradesService : BaseService, IGradesService
             return result;
 
         // Grading Topics for Skill Category
-        var gradingTopicEntities = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId).ToListAsync();
-        if (!gradingTopicEntities.Any())
+        var gradingCriteriaEntities = await _GradingCriteriasCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId).ToListAsync();
+        if (!gradingCriteriaEntities.Any())
             return result;
 
-        var gradingTopicModels = gradingTopicEntities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
-        foreach (var item in gradingTopicModels)
+        var gradingCriteriaModels = gradingCriteriaEntities.Select(c => c.Map<GradingCriteriaModel>(mapper)).ToList();
+        foreach (var item in gradingCriteriaModels)
         {
             if (skillCategoryEntity != null)
             {
@@ -59,12 +59,12 @@ public class GradesService : BaseService, IGradesService
 
         //var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
 
-        foreach (var topic in gradingTopicModels)
+        foreach (var topic in gradingCriteriaModels)
         {
             var model = new GradeModel
             {
                 BAPSId = bapsId,
-                GradingTopicId = topic.GradingTopicId,
+                GradingCriteriaId = topic.GradingCriteriaId,
                 // ----
                 TopicName = topic.Name,
                 Sequence = topic.Sequence,
@@ -75,7 +75,7 @@ public class GradesService : BaseService, IGradesService
                 Color = skillCategoryEntity?.Color,
             };
 
-            var entity = entities.FirstOrDefault(c => c.GradingTopicId == topic.GradingTopicId);
+            var entity = entities.FirstOrDefault(c => c.GradingCriteriaId == topic.GradingCriteriaId);
             if (entity != null)
             {
                 model.GradeId = entity.GradeId;
@@ -102,16 +102,16 @@ public class GradesService : BaseService, IGradesService
             return models;
 
         // Grading Topics for Skill Category
-        var topicIds = entities.Select(e => e.GradingTopicId).ToList();
-        var gradingTopicEntities = await _GradingTopicsCollection.Find(item => topicIds.Contains(item.GradingTopicId)).ToListAsync();
+        var topicIds = entities.Select(e => e.GradingCriteriaId).ToList();
+        var gradingCriteriaEntities = await _GradingCriteriasCollection.Find(item => topicIds.Contains(item.GradingCriteriaId)).ToListAsync();
 
         // Skill Category Entity
-        var skillCategoryIds = gradingTopicEntities.Select(g => g.SkillCategoryId).ToList();
+        var skillCategoryIds = gradingCriteriaEntities.Select(g => g.SkillCategoryId).ToList();
         var skillCategoryEntities = await _SkillsCollection.Find(item => skillCategoryIds.Contains(item.SkillCategoryId)).ToListAsync();
 
         foreach (var item in models)
         {
-            var topic = gradingTopicEntities.FirstOrDefault(c => c.GradingTopicId == item.GradingTopicId);
+            var topic = gradingCriteriaEntities.FirstOrDefault(c => c.GradingCriteriaId == item.GradingCriteriaId);
             if (topic != null)
             {
                 item.TopicName = topic.Name;
@@ -141,7 +141,7 @@ public class GradesService : BaseService, IGradesService
     {
         var entity = await _GradesCollection.Find(item =>
                 item.BAPSId == updateModel.BAPSId &&
-                item.GradingTopicId == updateModel.GradingTopicId &&
+                item.GradingCriteriaId == updateModel.GradingCriteriaId &&
                 item.JudgeUserId == updateModel.JudgeUserId)
             .FirstOrDefaultAsync();
 
@@ -154,7 +154,7 @@ public class GradesService : BaseService, IGradesService
             {
                 GradeId = (maxId.Value + 1),
                 BAPSId = updateModel.BAPSId,
-                GradingTopicId = updateModel.GradingTopicId,
+                GradingCriteriaId = updateModel.GradingCriteriaId,
                 JudgeUserId = updateModel.JudgeUserId,
                 Marks = updateModel.Marks
             };

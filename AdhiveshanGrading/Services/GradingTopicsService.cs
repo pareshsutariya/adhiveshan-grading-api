@@ -1,23 +1,23 @@
 namespace AdhiveshanGrading.Services;
 
-public interface IGradingTopicsService
+public interface IGradingCriteriasService
 {
     Task<List<SkillCategoryModel>> GetSkillCategories();
-    Task<List<GradingTopicModel>> Get();
-    Task<List<GradingTopicModel>> GetBySkillCategory(string skillCategory);
-    Task<GradingTopicModel> Get(int id);
-    GradingTopicModel Create(GradingTopicCreateModel createModel);
-    void Update(int id, GradingTopicUpdateModel updateModel);
+    Task<List<GradingCriteriaModel>> Get();
+    Task<List<GradingCriteriaModel>> GetBySkillCategory(string skillCategory);
+    Task<GradingCriteriaModel> Get(int id);
+    GradingCriteriaModel Create(GradingCriteriaCreateModel createModel);
+    void Update(int id, GradingCriteriaUpdateModel updateModel);
 }
 
-public class GradingTopicsService : BaseService, IGradingTopicsService
+public class GradingCriteriasService : BaseService, IGradingCriteriasService
 {
-    private readonly IMongoCollection<GradingTopic> _GradingTopicsCollection;
+    private readonly IMongoCollection<GradingCriteria> _GradingCriteriasCollection;
     private readonly IMongoCollection<SkillCategory> _SkillsCollection;
 
-    public GradingTopicsService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
+    public GradingCriteriasService(IAdvGradingSettings settings, IMapper mapper) : base(settings, mapper)
     {
-        _GradingTopicsCollection = Database.GetCollection<GradingTopic>(settings.GradingTopicsCollectionName);
+        _GradingCriteriasCollection = Database.GetCollection<GradingCriteria>(settings.GradingCriteriasCollectionName);
         _SkillsCollection = Database.GetCollection<SkillCategory>(settings.SkillCategoriesCollectionName);
     }
 
@@ -28,11 +28,11 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
         return models;
     }
 
-    public async Task<List<GradingTopicModel>> Get()
+    public async Task<List<GradingCriteriaModel>> Get()
     {
-        var entities = await _GradingTopicsCollection.Find(item => true).ToListAsync();
+        var entities = await _GradingCriteriasCollection.Find(item => true).ToListAsync();
 
-        var models = entities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
+        var models = entities.Select(c => c.Map<GradingCriteriaModel>(mapper)).ToList();
 
         var skillCategories = await _SkillsCollection.Find(item => true).ToListAsync();
 
@@ -51,7 +51,7 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
         return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.Name).ToList();
     }
 
-    public async Task<List<GradingTopicModel>> GetBySkillCategory(string skillCategory)
+    public async Task<List<GradingCriteriaModel>> GetBySkillCategory(string skillCategory)
     {
         var skill = skillCategory.Split(":")[0].Trim();
         var category = skillCategory.Split(":")[1].Trim();
@@ -61,9 +61,9 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
         if (skillCategoryEntity == null)
             throw new ApplicationException($"Skill Category not found");
 
-        var entities = await _GradingTopicsCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId && item.Status == "Active").ToListAsync();
+        var entities = await _GradingCriteriasCollection.Find(item => item.SkillCategoryId == skillCategoryEntity.SkillCategoryId && item.Status == "Active").ToListAsync();
 
-        var models = entities.Select(c => c.Map<GradingTopicModel>(mapper)).ToList();
+        var models = entities.Select(c => c.Map<GradingCriteriaModel>(mapper)).ToList();
 
         var skillCategories = await _SkillsCollection.Find(item => true).ToListAsync();
 
@@ -82,32 +82,32 @@ public class GradingTopicsService : BaseService, IGradingTopicsService
         return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.Name).ToList();
     }
 
-    public async Task<GradingTopicModel> Get(int id)
+    public async Task<GradingCriteriaModel> Get(int id)
     {
-        var entity = await _GradingTopicsCollection.Find<GradingTopic>(item => item.GradingTopicId == id).FirstOrDefaultAsync();
+        var entity = await _GradingCriteriasCollection.Find<GradingCriteria>(item => item.GradingCriteriaId == id).FirstOrDefaultAsync();
 
-        var model = entity.Map<GradingTopicModel>(mapper);
+        var model = entity.Map<GradingCriteriaModel>(mapper);
 
         return model;
     }
 
-    public GradingTopicModel Create(GradingTopicCreateModel createModel)
+    public GradingCriteriaModel Create(GradingCriteriaCreateModel createModel)
     {
-        var maxId = _GradingTopicsCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.GradingTopicId;
+        var maxId = _GradingCriteriasCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.GradingCriteriaId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
-        var entity = createModel.Map<GradingTopic>(mapper);
-        entity.GradingTopicId = (maxId.Value + 1);
+        var entity = createModel.Map<GradingCriteria>(mapper);
+        entity.GradingCriteriaId = (maxId.Value + 1);
 
-        _GradingTopicsCollection.InsertOne(entity);
+        _GradingCriteriasCollection.InsertOne(entity);
 
-        var model = entity.Map<GradingTopicModel>(mapper);
+        var model = entity.Map<GradingCriteriaModel>(mapper);
 
         return model;
     }
 
-    public void Update(int id, GradingTopicUpdateModel updateModel)
+    public void Update(int id, GradingCriteriaUpdateModel updateModel)
     {
-        _GradingTopicsCollection.ReplaceOne(item => item.GradingTopicId == id, updateModel.Map<GradingTopic>(mapper));
+        _GradingCriteriasCollection.ReplaceOne(item => item.GradingCriteriaId == id, updateModel.Map<GradingCriteria>(mapper));
     }
 }

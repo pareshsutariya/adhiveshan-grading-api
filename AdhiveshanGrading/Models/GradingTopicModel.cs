@@ -1,8 +1,8 @@
 namespace AdhiveshanGrading.Models;
 
-public class GradingTopicModel : ModelBase
+public class GradingCriteriaModel : ModelBase
 {
-    public int GradingTopicId { get; set; }
+    public int GradingCriteriaId { get; set; }
 
     public int SkillCategoryId { get; set; }
 
@@ -21,7 +21,7 @@ public class GradingTopicModel : ModelBase
     public string SkillWithCategory => $"{Skill} : {Category}";
 }
 
-public class GradingTopicCreateModel : ModelBase
+public class GradingCriteriaCreateModel : ModelBase
 {
     public int SkillCategoryId { get; set; }
 
@@ -34,9 +34,9 @@ public class GradingTopicCreateModel : ModelBase
     public string Status { get; set; }
 }
 
-public class GradingTopicUpdateModel : ModelBase
+public class GradingCriteriaUpdateModel : ModelBase
 {
-    public int GradingTopicId { get; set; }
+    public int GradingCriteriaId { get; set; }
 
     public int SkillCategoryId { get; set; }
 

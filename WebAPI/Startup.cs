@@ -30,7 +30,7 @@ public class Startup
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IParticipantsService, ParticipantsService>();
         services.AddSingleton<ICompetitionEventsService, CompetitionEventsService>();
-        services.AddSingleton<IGradingTopicsService, GradingTopicsService>();
+        services.AddSingleton<IGradingCriteriasService, GradingCriteriasService>();
         services.AddSingleton<IGradesService, GradesService>();
         services.AddSingleton<ConfigurationsService>();
 

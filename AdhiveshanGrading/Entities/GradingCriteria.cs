@@ -1,8 +1,8 @@
 ﻿namespace AdhiveshanGrading.Entities;
 
-public class GradingTopic : MongoDBEntity
+public class GradingCriteria : MongoDBEntity
 {
-    public int GradingTopicId { get; set; }
+    public int GradingCriteriaId { get; set; }
     public int SkillCategoryId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
