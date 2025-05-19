@@ -13,11 +13,6 @@
     <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'AdhiveshanGrading' " />
-  <ItemGroup>
-    <None Remove="MongoDB.Driver" />
-    <None Remove="Swashbuckle.AspNetCore" />
-  </ItemGroup>
-
   <ItemGroup>    
     <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
@@ -25,7 +20,6 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.29" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.415.18" />
