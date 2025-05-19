@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace AdhiveshanGrading.WebAPI;
+namespace AdhiveshanGrading.API;
 
 public class Program
 {

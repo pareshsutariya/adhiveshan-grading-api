@@ -1,4 +1,4 @@
-﻿namespace AdhiveshanGradingAPI.WebAPI.Controllers;
+﻿namespace AdhiveshanGradingAPI.Controllers;
 
 [Route("/")]
 [ApiController]

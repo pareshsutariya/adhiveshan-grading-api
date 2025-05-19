@@ -2,7 +2,7 @@ using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
-namespace AdhiveshanGrading.WebAPI.Middlewares;
+namespace AdhiveshanGrading.API.Middlewares;
 
 public class ExceptionMiddleware
 {

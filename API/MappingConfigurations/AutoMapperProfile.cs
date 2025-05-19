@@ -1,4 +1,4 @@
-namespace AdhiveshanGrading.WebAPI;
+namespace AdhiveshanGrading.API;
 
 public class AutoMapperProfile : Profile
 {

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>AdhiveshanGrading.WebAPI</RootNamespace>
+    <RootNamespace>AdhiveshanGrading.API</RootNamespace>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 
     <Nullable>enable</Nullable>
@@ -17,25 +17,22 @@
     <None Remove="MongoDB.Driver" />
     <None Remove="Swashbuckle.AspNetCore" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.415.18" />
+
+  <ItemGroup>    
     <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.29" />
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
-      <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
-      <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.4.0" />
-      <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\AdhiveshanGrading\AdhiveshanGrading.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference> 
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.415.18" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.4.0" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
   </ItemGroup>
 </Project>
 
