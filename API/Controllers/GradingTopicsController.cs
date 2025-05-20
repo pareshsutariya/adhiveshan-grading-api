@@ -12,25 +12,24 @@ public class GradingCriteriasController : ControllerBase
     }
 
     [HttpGet("GetSkillCategories")]
-    public async Task<List<SkillCategoryModel>> GetSkillCategories() => await _service.GetSkillCategories();
+    public async Task<IActionResult> GetSkillCategories()
+        => Ok(ServiceResponse.Success(await _service.GetSkillCategories()));
 
     [HttpGet]
-    public async Task<List<GradingCriteriaModel>> Get() => await _service.Get();
+    public async Task<IActionResult> Get()
+        => Ok(ServiceResponse.Success(await _service.Get()));
 
     [HttpGet("GetBySkillCategory/{skillCategory}")]
-    public async Task<List<GradingCriteriaModel>> GetBySkillCategory(string skillCategory)
-        => await _service.GetBySkillCategory(skillCategory);
+    public async Task<IActionResult> GetBySkillCategory(string skillCategory)
+        => Ok(ServiceResponse.Success(await _service.GetBySkillCategory(skillCategory)));
 
     [HttpGet("{id}")]
-    public async Task<GradingCriteriaModel> Get(int id) => await _service.Get(id);
+    public async Task<IActionResult> Get(int id)
+        => Ok(ServiceResponse.Success(await _service.Get(id)));
 
     [HttpPost]
-    public ActionResult<GradingCriteriaModel> Create(GradingCriteriaCreateModel item)
-    {
-        var result = _service.Create(item);
-
-        return CreatedAtRoute("", new { id = result.GradingCriteriaId }, result);
-    }
+    public IActionResult Create(GradingCriteriaCreateModel item)
+        => Ok(ServiceResponse.Success(_service.Create(item)));
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, GradingCriteriaUpdateModel model)
@@ -42,6 +41,6 @@ public class GradingCriteriasController : ControllerBase
 
         _service.Update(id, model);
 
-        return NoContent();
+        return Ok(ServiceResponse.Success(NoContent()));
     }
 }

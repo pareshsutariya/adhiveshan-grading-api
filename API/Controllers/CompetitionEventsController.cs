@@ -12,22 +12,20 @@ public class CompetitionEventsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<CompetitionEventModel>> Get() => await _service.Get();
+    public async Task<IActionResult> Get()
+        => Ok(ServiceResponse.Success(await _service.Get()));
 
     [HttpGet("GetEventsForLoginUser/{loginUserBapsId}")]
-    public async Task<List<CompetitionEventModel>> GetEventsForLoginUser(string loginUserBapsId)
-        => await _service.GetEventsForLoginUser(loginUserBapsId);
+    public async Task<IActionResult> GetEventsForLoginUser(string loginUserBapsId)
+        => Ok(ServiceResponse.Success(await _service.GetEventsForLoginUser(loginUserBapsId)));
 
     [HttpGet("{id}")]
-    public async Task<CompetitionEventModel> Get(int id) => await _service.Get(id);
+    public async Task<IActionResult> Get(int id)
+        => Ok(ServiceResponse.Success(await _service.Get(id)));
 
     [HttpPost]
-    public ActionResult<CompetitionEventModel> Create(CompetitionEventCreateModel item)
-    {
-        var result = _service.Create(item);
-
-        return CreatedAtRoute("", new { id = result.CompetitionEventId }, result);
-    }
+    public IActionResult Create(CompetitionEventCreateModel item)
+        => Ok(ServiceResponse.Success(_service.Create(item)));
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, CompetitionEventUpdateModel model)
@@ -39,6 +37,6 @@ public class CompetitionEventsController : ControllerBase
 
         _service.Update(id, model);
 
-        return NoContent();
+        return Ok(ServiceResponse.Success(NoContent()));
     }
 }

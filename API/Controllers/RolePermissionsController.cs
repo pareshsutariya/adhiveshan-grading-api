@@ -7,8 +7,10 @@ public class RolePermissionsController : ControllerBase
     public RolePermissionsController() { }
 
     [HttpGet]
-    public async Task<List<RolePermissionsModel>> Get() => RolePermissionsService.GetRolePermissions();
+    public async Task<IActionResult> Get()
+        => Ok(ServiceResponse.Success(RolePermissionsService.GetRolePermissions()));
 
     [HttpGet("pivot")]
-    public async Task<List<RolePermissionsPivotModel>> GetPivot() => RolePermissionsService.GetRolePermissionsPivot();
+    public async Task<IActionResult> GetPivot()
+        => Ok(ServiceResponse.Success(RolePermissionsService.GetRolePermissionsPivot()));
 }

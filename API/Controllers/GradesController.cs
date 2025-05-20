@@ -12,14 +12,14 @@ public class GradesController : ControllerBase
     }
 
     [HttpGet("GetForParticipantAndJudge/{bapsId}/{skillCategory}/{judgeUserId}")]
-    public async Task<List<GradeModel>> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId)
-        => await _service.GetForParticipantAndJudge(bapsId, skillCategory, judgeUserId);
+    public async Task<IActionResult> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId)
+        => Ok(ServiceResponse.Success(await _service.GetForParticipantAndJudge(bapsId, skillCategory, judgeUserId)));
 
     [HttpGet("GetGradedParticipantsForJudge/{judgeUserId}")]
-    public async Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId)
-        => await _service.GetGradedParticipantsForJudge(judgeUserId);
+    public async Task<IActionResult> GetGradedParticipantsForJudge(int judgeUserId)
+        => Ok(ServiceResponse.Success(await _service.GetGradedParticipantsForJudge(judgeUserId)));
 
     [HttpPost]
-    public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel model) =>
-        await _service.AddOrUpdateForParticipantAndJudge(model);
+    public async Task<IActionResult> AddOrUpdateForParticipantAndJudge(GradeUpdateModel model)
+        => Ok(ServiceResponse.Success(await _service.AddOrUpdateForParticipantAndJudge(model)));
 }

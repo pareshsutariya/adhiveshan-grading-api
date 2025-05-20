@@ -12,32 +12,27 @@ public class ParticipantsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<ParticipantModel>> Get([FromQuery] string? center = "", [FromQuery] string? mandal = "") => await _service.Get(center, mandal);
+    public async Task<IActionResult> Get([FromQuery] string? center = "", [FromQuery] string? mandal = "")
+        => Ok(ServiceResponse.Success(await _service.Get(center, mandal)));
 
     [HttpGet("getByMISId/{misId}")]
-    public async Task<ParticipantModel> GetByMISId(int misId) => await _service.GetByMISId(misId);
+    public async Task<IActionResult> GetByMISId(int misId)
+        => Ok(ServiceResponse.Success(await _service.GetByMISId(misId)));
 
     [HttpGet("getByBAPSId/{bapsId}")]
-    public async Task<ParticipantModel> GetByBAPSId(string bapsId) => await _service.GetByBAPSId(bapsId);
+    public async Task<IActionResult> GetByBAPSId(string bapsId)
+        => Ok(ServiceResponse.Success(await _service.GetByBAPSId(bapsId)));
 
     [HttpGet("GetParticipantForJudging/{bapsId}/{judgeUserId}")]
-    public async Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId)
-        => await _service.GetParticipantForJudging(bapsId, judgeUserId);
+    public async Task<IActionResult> GetParticipantForJudging(string bapsId, int judgeUserId)
+        => Ok(ServiceResponse.Success(await _service.GetParticipantForJudging(bapsId, judgeUserId)));
 
     [HttpPost("updateHostCenter")]
-    public async Task<ActionResult<ParticipantModel>> UpdateHostCenter(ParticipantUpdateHostCenterModel model)
-    {
-        var result = await _service.UpdateHostCenter(model);
-
-        return result;
-    }
+    public async Task<IActionResult> UpdateHostCenter(ParticipantUpdateHostCenterModel model)
+        => Ok(ServiceResponse.Success(await _service.UpdateHostCenter(model)));
 
     [HttpPost("import")]
-    public async Task<ActionResult<List<ParticipantModel>>> Import(List<ParticipantModel> models)
-    {
-        var result = await _service.Import(models);
-
-        return result;
-    }
+    public async Task<IActionResult> Import(List<ParticipantModel> models)
+        => Ok(ServiceResponse.Success(await _service.Import(models)));
 }
 
