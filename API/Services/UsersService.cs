@@ -9,7 +9,6 @@ public interface IUsersService
     UserModel Create(UserCreateModel createModel);
     void Update(int id, UserUpdateModel updateModel);
     Task Remove(int id);
-    Task<UserModel> GetUserByUsernameAndPassword(string username, string password);
     Task<bool> JudgesImport(string loginUserBapsId, List<UserJudgeImport> models);
 }
 
@@ -70,28 +69,6 @@ public class UsersService : BaseService, IUsersService
         var model = entity.Map<UserModel>(mapper);
 
         return model;
-    }
-
-    public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)
-    {
-        var userModel = (await _UsersCollection.Find(item => item.BAPSId.ToLower() == username.ToLower() && item.Password == password)
-                                               .FirstOrDefaultAsync()
-                        )?.Map<UserModel>(mapper);
-
-        if (userModel == null)
-            throw new ApplicationException($"User not found for the given credentials");
-
-        if (userModel.Status != "Active")
-            throw new ApplicationException($"User {userModel.FullName} is not Active");
-
-        if (userModel != null && userModel.AssignedRoles.Any())
-        {
-            userModel.AssignedPermissions = RolePermissionsService.GetRolePermissions()
-                            .Where(r => userModel.AssignedRoles.Contains(r.RoleName))
-                            .SelectMany(c => c.Permissions).ToList();
-        }
-
-        return userModel;
     }
 
     public UserModel Create(UserCreateModel createModel)

@@ -1,11 +1,7 @@
-﻿using AdhiveshanGrading.Middlewares;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System.Text;
+﻿using System.Text;
+
+using AdhiveshanGrading.Middlewares;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Models;
 
 namespace AdhiveshanGrading.API;
@@ -62,6 +57,7 @@ public class Startup
         #region Adhiveshan Services
         services.AddSingleton<IAdvGradingSettings>(sp => sp.GetRequiredService<IOptions<AdvGradingSettings>>().Value);
         services.Configure<AdvGradingSettings>(Configuration.GetSection(nameof(AdvGradingSettings)));
+        services.AddSingleton<IAuthService, AuthService>();
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IParticipantsService, ParticipantsService>();
         services.AddSingleton<ICompetitionEventsService, CompetitionEventsService>();

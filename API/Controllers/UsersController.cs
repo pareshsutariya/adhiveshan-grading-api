@@ -43,10 +43,6 @@ public class UsersController : ControllerBase
     public async Task Delete(int id)
         => await _service.Remove(id);
 
-    [HttpGet("GetUserByUsernameAndPassword/{username}/{password}")]
-    public async Task<IActionResult> GetUserByUsernameAndPassword(string username, string password)
-        => Ok(ServiceResponse.Success(await _service.GetUserByUsernameAndPassword(username, password)));
-
     [HttpPost("JudgesImport/{loginUserBapsId}")]
     public async Task<IActionResult> JudgesImport(string loginUserBapsId, List<UserJudgeImport> models)
         => Ok(ServiceResponse.Success(await _service.JudgesImport(loginUserBapsId, models)));
