@@ -34,6 +34,10 @@ public static class RolePermissionsService
     public const string Events_Add = "Events: Add";
     public const string Events_Update = "Events: Update";
 
+    public const string Schedules_View = "Schedules: View";
+    public const string Schedules_Add = "Schedules: Add";
+    public const string Schedules_Update = "Schedules: Update";
+
     public const string Grading_Participants_Search_Participants = "Grading Participants: Search Participants";
     public const string Grading_Participants_Grade_Participants = "Grading Participants: Grade Participants";
     public const string Grading_Participants_View_Participants_Grade = "Grading Participants: View Participants Grade";
@@ -62,6 +66,10 @@ public static class RolePermissionsService
                 Events_View,
                 Events_Add,
                 Events_Update,
+
+                Schedules_View,
+                Schedules_Add,
+                Schedules_Update,
 
                 Reports_Check_In_Report,
                 Reports_Grading_Report,
@@ -97,6 +105,10 @@ public static class RolePermissionsService
                 Grading_Questions_View,
 
                 Events_View,
+                Events_Update,
+
+                Events_View,
+                Events_Add,
                 Events_Update,
 
                 Users_Judges_View,
