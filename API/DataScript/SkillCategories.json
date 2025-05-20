@@ -1,0 +1,100 @@
+[{
+  "_id": {
+    "$oid": "680aa7726e49d43b5b9f04b4"
+  },
+  "SkillCategoryId": 1,
+  "Skill": "Pravachan",
+  "Category": "Sahajanand",
+  "Status": "Active",
+  "Color": "Green"
+},
+{
+  "_id": {
+    "$oid": "680aa7ca6e49d43b5b9f04b7"
+  },
+  "SkillCategoryId": 2,
+  "Skill": "Pravachan",
+  "Category": "Neelkanth",
+  "Status": "Active",
+  "Color": "Green"
+},
+{
+  "_id": {
+    "$oid": "680aa8096e49d43b5b9f04b8"
+  },
+  "SkillCategoryId": 3,
+  "Skill": "Pravachan",
+  "Category": "Ghanshyam",
+  "Color": "Green",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa81f6e49d43b5b9f04b9"
+  },
+  "SkillCategoryId": 4,
+  "Skill": "Pravachan",
+  "Category": "Harikrishna",
+  "Color": "Green",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa8326e49d43b5b9f04ba"
+  },
+  "SkillCategoryId": 5,
+  "Skill": "Pravachan",
+  "Category": "Shri Hari",
+  "Color": "Green",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa84b6e49d43b5b9f04bb"
+  },
+  "SkillCategoryId": 6,
+  "Skill": "Emcee",
+  "Category": "Sahajanand",
+  "Color": "Blue",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa8636e49d43b5b9f04bc"
+  },
+  "SkillCategoryId": 7,
+  "Skill": "Emcee",
+  "Category": "Neelkanth",
+  "Color": "Blue",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa8726e49d43b5b9f04bd"
+  },
+  "SkillCategoryId": 8,
+  "Skill": "Emcee",
+  "Category": "Ghanshyam",
+  "Color": "Blue",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa8806e49d43b5b9f04be"
+  },
+  "SkillCategoryId": 9,
+  "Skill": "Emcee",
+  "Category": "Harikrishna",
+  "Color": "Blue",
+  "Status": "Active"
+},
+{
+  "_id": {
+    "$oid": "680aa88d6e49d43b5b9f04bf"
+  },
+  "SkillCategoryId": 10,
+  "Skill": "Emcee",
+  "Category": "Shri Hari",
+  "Color": "Blue",
+  "Status": "Active"
+}]
