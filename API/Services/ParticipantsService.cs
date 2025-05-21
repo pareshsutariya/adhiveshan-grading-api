@@ -47,6 +47,8 @@ public class ParticipantsService : BaseService, IParticipantsService
             throw new ApplicationException($"Competition Event not foud for the given eventId: {compEvent}");
 
         var participants = await _participantsCollection.Find(item => item.Gender == gender &&
+                                                        (item.Speech_Pravachan_Category != null ||
+                                                        item.Emcee_Category != null) &&
                                                         (compEvent.Centers.Contains(item.Center) ||
                                                         compEvent.Centers.Contains(item.HostCenter))
                                                         ).ToListAsync();
