@@ -6,7 +6,6 @@ public interface IEventSchedulesService
 {
     Task<EventSchedule> GetByEventId(int eventId);
     EventSchedule Create(EventSchedule createModel);
-    void Update(int id, EventSchedule updateModel);
 }
 
 public class EventSchedulesService : BaseService, IEventSchedulesService
@@ -30,18 +29,10 @@ public class EventSchedulesService : BaseService, IEventSchedulesService
 
     public EventSchedule Create(EventSchedule entity)
     {
-        var maxId = _EventSchedulesCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.EventScheduleId;
-        maxId = maxId.HasValue == false ? 0 : maxId.Value;
-
-        entity.EventScheduleId = (maxId.Value + 1);
+        _EventSchedulesCollection.DeleteOne(c => c.EventId == entity.EventId);
 
         _EventSchedulesCollection.InsertOne(entity);
 
         return entity;
-    }
-
-    public void Update(int id, EventSchedule entity)
-    {
-        _EventSchedulesCollection.ReplaceOne(item => item.EventScheduleId == id, entity);
     }
 }

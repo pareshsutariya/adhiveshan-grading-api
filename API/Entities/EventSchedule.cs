@@ -2,7 +2,6 @@ namespace AdhiveshanGrading.Entities;
 
 public class EventSchedule : MongoDBEntity
 {
-    public int EventScheduleId { get; set; }
     public int EventId { get; set; }
     public List<Room> Rooms { get; set; }
     public List<ParticipantForSchedule> Participants { get; set; }

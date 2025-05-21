@@ -19,12 +19,4 @@ public class EventSchedulesController : ControllerBase
     [HttpPost]
     public IActionResult Create(EventSchedule item)
         => Ok(ServiceResponse.Success(_service.Create(item)));
-
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, EventSchedule model)
-    {
-        _service.Update(id, model);
-
-        return Ok(ServiceResponse.Success(NoContent()));
-    }
 }
