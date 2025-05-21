@@ -12,7 +12,7 @@ public class EventSchedulesController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("GetByEventId/{eventId}")]
     public async Task<IActionResult> GetByEventId(int eventId)
         => Ok(ServiceResponse.Success(await _service.GetByEventId(eventId)));
 
