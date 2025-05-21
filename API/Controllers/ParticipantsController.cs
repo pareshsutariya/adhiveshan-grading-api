@@ -24,6 +24,10 @@ public class ParticipantsController : ControllerBase
     public async Task<IActionResult> GetByBAPSId(string bapsId)
         => Ok(ServiceResponse.Success(await _service.GetByBAPSId(bapsId)));
 
+    [HttpGet("GetParticipantsForEvent/{eventId}/{gender}")]
+    public async Task<IActionResult> GetParticipantsForEvent(int eventId, string gender)
+        => Ok(ServiceResponse.Success(await _service.GetParticipantsForEvent(eventId, gender)));
+
     [HttpGet("GetParticipantForJudging/{bapsId}/{judgeUserId}")]
     public async Task<IActionResult> GetParticipantForJudging(string bapsId, int judgeUserId)
         => Ok(ServiceResponse.Success(await _service.GetParticipantForJudging(bapsId, judgeUserId)));

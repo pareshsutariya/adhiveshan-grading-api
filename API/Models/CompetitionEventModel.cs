@@ -12,6 +12,8 @@ public class CompetitionEventModel : ModelBase
     public DateTime EndDate { get; set; }
 
     public string Status { get; set; }
+    //------
+    public string RegionalHostCenterDate => $"{Region} : {HostCenter} : {StartDate.ToShortDateString()}";
 }
 
 public class CompetitionEventCreateModel

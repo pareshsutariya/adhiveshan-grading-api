@@ -7,6 +7,7 @@ public interface IParticipantsService
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
     Task<ParticipantModel> GetByMISId(int misId);
     Task<ParticipantModel> GetByBAPSId(string bapsId);
+    Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender);
     Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
@@ -37,6 +38,20 @@ public class ParticipantsService : BaseService, IParticipantsService
         var entity = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
 
         return entity?.Map<ParticipantModel>(mapper);
+    }
+
+    public async Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender)
+    {
+        var compEvent = await _competitionEventsCollection.Find(item => item.CompetitionEventId == eventId).FirstOrDefaultAsync();
+        if (compEvent == null)
+            throw new ApplicationException($"Competition Event not foud for the given eventId: {compEvent}");
+
+        var participants = await _participantsCollection.Find(item => item.Gender == gender &&
+                                                        (compEvent.Centers.Contains(item.Center) ||
+                                                        compEvent.Centers.Contains(item.HostCenter))
+                                                        ).ToListAsync();
+
+        return participants.Select(c => c.Map<ParticipantModel>(mapper)).ToList();
     }
 
     public async Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId)
