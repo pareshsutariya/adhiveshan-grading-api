@@ -12,6 +12,7 @@ public class AdvGradingSettings : IAdvGradingSettings
     public string UsersCollectionName { get; set; } = null!;
     public string ConfigurationsCollectionName { get; set; } = null!;
     public string CompetitionEventsCollectionName { get; set; } = null!;
+    public string EventSchedulesCollectionName { get; set; } = null!;
     public string GradingCriteriasCollectionName { get; set; } = null!;
     public string GradesCollectionName { get; set; } = null!;
     public string SkillCategoriesCollectionName { get; set; } = null!;
@@ -27,6 +28,7 @@ public interface IAdvGradingSettings
     string UsersCollectionName { get; set; }
     string ConfigurationsCollectionName { get; set; }
     string CompetitionEventsCollectionName { get; set; }
+    string EventSchedulesCollectionName { get; set; }
     string GradingCriteriasCollectionName { get; set; }
     string GradesCollectionName { get; set; }
     string SkillCategoriesCollectionName { get; set; }
