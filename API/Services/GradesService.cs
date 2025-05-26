@@ -118,17 +118,17 @@ public class GradesService : BaseService, IGradesService
         foreach (var participantBAPSId in participantsBAPSIds)
         {
             var participant = await _participantsCollection.Find(c => c.BAPSId == participantBAPSId).FirstOrDefaultAsync();
-            var participantModel = participant?.Map<ParticipantGradesModel>(mapper);
+            var participantModel = participant?.Map<ParticipantModel>(mapper);
 
             if (participantModel != null)
             {
-                result.Add(participantModel);
+                result.Add(new ParticipantGradesModel { Participant = participantModel });
             }
         }
 
         foreach (var grade in gradeModels)
         {
-            var participantModel = result.FirstOrDefault(c => c.BAPSId == grade.BAPSId);
+            var participantModel = result.FirstOrDefault(c => c.Participant.BAPSId == grade.BAPSId);
 
             var topic = gradingCriteriaEntities.FirstOrDefault(c => c.GradingCriteriaId == grade.GradingCriteriaId);
             if (topic != null)
@@ -148,10 +148,16 @@ public class GradesService : BaseService, IGradesService
                 if (skillCategory.Skill == "Pravachan")
                 {
                     participantModel.PravachanGrades.Add(grade);
+
+                    participantModel.PravachanSkill = skillCategory.Skill;
+                    participantModel.PravachanCategory = skillCategory.Category;
                 }
                 else if (skillCategory.Skill == "Emcee")
                 {
                     participantModel.EmceeGrades.Add(grade);
+
+                    participantModel.EmceeSkill = skillCategory.Skill;
+                    participantModel.EmceeCategory = skillCategory.Category;
                 }
             }
 
@@ -159,7 +165,10 @@ public class GradesService : BaseService, IGradesService
             participantModel.JudgeBAPSId = judge?.BAPSId;
         }
 
-        return result.OrderBy(c => c.Region).ThenBy(c => c.Center).ThenByDescending(c => c.Gender).ThenBy(c => c.FullName).ToList();
+        return result.OrderBy(c => c.Participant.Region)
+                    .ThenBy(c => c.Participant.Center)
+                    .ThenByDescending(c => c.Participant.Gender)
+                    .ThenBy(c => c.Participant.FullName).ToList();
     }
 
     public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel)

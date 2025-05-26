@@ -50,7 +50,10 @@ public class GradingCriteriasService : BaseService, IGradingCriteriasService
             }
         }
 
-        return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.Name).ToList();
+        return models.OrderBy(c => c.SkillWithCategory)
+                    //.ThenBy(c => c.Section)
+                    .ThenBy(c => c.Sequence)
+                    .ThenBy(c => c.Name).ToList();
     }
 
     public async Task<List<GradingCriteriaModel>> GetBySkillCategory(string skillCategory)
@@ -81,7 +84,10 @@ public class GradingCriteriasService : BaseService, IGradingCriteriasService
             }
         }
 
-        return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.Name).ToList();
+        return models.OrderBy(c => c.SkillWithCategory)
+                     //.ThenBy(c => c.Section)
+                     .ThenBy(c => c.Sequence)
+                     .ThenBy(c => c.Name).ToList();
     }
 
     public async Task<GradingCriteriaModel> Get(int id)
