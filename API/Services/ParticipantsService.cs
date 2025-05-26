@@ -58,26 +58,40 @@ public class ParticipantsService : BaseService, IParticipantsService
 
     public async Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId)
     {
-        // Get participant by MIS Id
-        var participant = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
-        if (participant == null)
-            throw new ApplicationException($"Participant not found for the given BAPS Id: {bapsId}");
-
         // Get Judge
         var judgeUser = await _usersCollection.Find(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
         if (judgeUser == null)
             throw new ApplicationException($"Judge not found");
 
+        // Judge Events
+        if (!judgeUser.AssignedEventIds.Any())
+            throw new ApplicationException($"Judge {judgeUser.FullName} is not assigned any Competition Event");
+
+        // Active Events
+        var events = await _competitionEventsCollection.Find(item => judgeUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
+        if (!events.Any())
+            throw new ApplicationException($"Judge {judgeUser.FullName}'s assigned Competition Events are Not Active");
+
+        // Get participant by MIS Id
+        var participant = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
+        if (participant == null)
+            throw new ApplicationException($"Participant not found for the given BAPS Id: {bapsId}");
+
         // Judge assigned Genders
         if (!judgeUser.AssignedGenders.Contains(participant.Gender))
             throw new ApplicationException($"Judge {judgeUser.FullName} is not now allowed to do judging for {participant.Gender} gender");
 
+        // Judge assigned Skills
         if (judgeUser.AssignedSkillCategories == null || !judgeUser.AssignedSkillCategories.Any())
-            throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
+            throw new ApplicationException($"Judge {judgeUser.FullName} hasn't assigned any skills for judging");
 
-        var judgeSkillsMatchedWithParticipantSkills = false;
+        // Event Center vs Participant Center or HostCenter
+        var eventCenters = string.Join(", ", events.SelectMany(e => e.Centers));
+        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with judge's assigned events' center: {eventCenters}");
 
         // Validate participant skill
+        var judgeSkillsMatchedWithParticipantSkills = false;
         foreach (var judgeSkillCategory in judgeUser.AssignedSkillCategories!)
         {
             var skill = judgeSkillCategory.Split(":")[0].Trim();
@@ -90,23 +104,8 @@ public class ParticipantsService : BaseService, IParticipantsService
                 judgeSkillsMatchedWithParticipantSkills = true;
         }
 
-        // // TODO: Need to uncomment below
-        // if (judgeSkillsMatchedWithParticipantSkills == false)
-        //     throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
-
-        // Judge Events
-        if (!judgeUser.AssignedEventIds.Any())
-            throw new ApplicationException($"Judge {judgeUser.FullName} is not assigned any Competition Event");
-
-        // Active Events
-        var events = await _competitionEventsCollection.Find(item => judgeUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
-        if (!events.Any())
-            throw new ApplicationException($"Judge {judgeUser.FullName}'s assigned Competition Events are Not Active");
-
-        // TODO: Need to uncomment below
-        // // Event Center vs Participant Center or HostCenter
-        // if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
-        //     throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' center/host center {participant.Center}/{participant.HostCenter ?? ""} is not matching with judge's assigned events' center");
+        if (judgeSkillsMatchedWithParticipantSkills == false)
+            throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
 
         return participant?.Map<ParticipantModel>(mapper);
     }
