@@ -9,7 +9,7 @@ public class GradeModel : ModelBase
     public int? JudgeUserId { get; set; }
 
     // ------------
-    public ParticipantModel Participant { get; set; }
+    //public ParticipantModel Participant { get; set; }
 
     public string SectionName { get; set; }
     public string TopicName { get; set; }
@@ -20,8 +20,6 @@ public class GradeModel : ModelBase
     public string Category { get; set; }
     public string Color { get; set; }
     public string SkillWithCategory => $"{Skill} : {Category}";
-    public string JudgeName { get; set; }
-    public string JudgeBAPSId { get; set; }
 }
 
 public class GradeUpdateModel : ModelBase

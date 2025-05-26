@@ -5,7 +5,7 @@ namespace AdhiveshanGrading.Services;
 public interface IGradesService
 {
     Task<List<GradeModel>> GetForParticipantAndJudge(string bapsId, string skillCategory, int judgeUserId);
-    Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId);
+    Task<List<ParticipantGradesModel>> GetGradedParticipantsForJudge(int judgeUserId);
     Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel);
 }
 
@@ -92,53 +92,74 @@ public class GradesService : BaseService, IGradesService
         return result.OrderBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
     }
 
-    public async Task<List<GradeModel>> GetGradedParticipantsForJudge(int judgeUserId)
+    public async Task<List<ParticipantGradesModel>> GetGradedParticipantsForJudge(int judgeUserId)
     {
+        var result = new List<ParticipantGradesModel>();
+
         // Judge
         var judge = await _UsersCollection.Find<User>(item => item.UserId == judgeUserId).FirstOrDefaultAsync();
 
         // Graded Participants For judge
-        var entities = await _GradesCollection.Find(item => item.JudgeUserId == judgeUserId).ToListAsync();
-
-        var models = entities.Select(c => c.Map<GradeModel>(mapper)).ToList();
-        if (!models.Any())
-            return models;
+        var grades = await _GradesCollection.Find(item => item.JudgeUserId == judgeUserId).ToListAsync();
+        var gradeModels = grades.Select(c => c.Map<GradeModel>(mapper)).ToList();
+        if (!gradeModels.Any())
+            return default;
 
         // Grading Topics for Skill Category
-        var topicIds = entities.Select(e => e.GradingCriteriaId).ToList();
+        var participantsBAPSIds = grades.Select(e => e.BAPSId).Distinct().ToList();
+        var topicIds = grades.Select(e => e.GradingCriteriaId).ToList();
         var gradingCriteriaEntities = await _GradingCriteriasCollection.Find(item => topicIds.Contains(item.GradingCriteriaId)).ToListAsync();
 
         // Skill Category Entity
         var skillCategoryIds = gradingCriteriaEntities.Select(g => g.SkillCategoryId).ToList();
         var skillCategoryEntities = await _SkillsCollection.Find(item => skillCategoryIds.Contains(item.SkillCategoryId)).ToListAsync();
 
-        foreach (var item in models)
+        // Get Participants
+        foreach (var participantBAPSId in participantsBAPSIds)
         {
-            var topic = gradingCriteriaEntities.FirstOrDefault(c => c.GradingCriteriaId == item.GradingCriteriaId);
+            var participant = await _participantsCollection.Find(c => c.BAPSId == participantBAPSId).FirstOrDefaultAsync();
+            var participantModel = participant?.Map<ParticipantGradesModel>(mapper);
+
+            if (participantModel != null)
+            {
+                result.Add(participantModel);
+            }
+        }
+
+        foreach (var grade in gradeModels)
+        {
+            var participantModel = result.FirstOrDefault(c => c.BAPSId == grade.BAPSId);
+
+            var topic = gradingCriteriaEntities.FirstOrDefault(c => c.GradingCriteriaId == grade.GradingCriteriaId);
             if (topic != null)
             {
-                item.Sequence = topic.Sequence;
-                item.SectionName = topic.Section;
-                item.TopicName = topic.Name;
+                grade.Sequence = topic.Sequence;
+                grade.SectionName = topic.Section;
+                grade.TopicName = topic.Name;
                 var skillCategory = skillCategoryEntities.FirstOrDefault(c => c.SkillCategoryId == topic.SkillCategoryId);
 
                 if (skillCategory != null)
                 {
-                    item.Skill = skillCategory?.Skill;
-                    item.Category = skillCategory?.Category;
-                    item.Color = skillCategory?.Color;
+                    grade.Skill = skillCategory?.Skill;
+                    grade.Category = skillCategory?.Category;
+                    grade.Color = skillCategory?.Color;
+                }
+
+                if (skillCategory.Skill == "Pravachan")
+                {
+                    participantModel.PravachanGrades.Add(grade);
+                }
+                else if (skillCategory.Skill == "Emcee")
+                {
+                    participantModel.EmceeGrades.Add(grade);
                 }
             }
 
-            var participant = await _participantsCollection.Find(c => c.BAPSId == item.BAPSId).FirstOrDefaultAsync();
-
-            item.Participant = participant?.Map<ParticipantModel>(mapper);
-
-            item.JudgeName = judge?.FullName;
-            item.JudgeBAPSId = judge?.BAPSId;
+            participantModel.JudgeName = judge?.FullName;
+            participantModel.JudgeBAPSId = judge?.BAPSId;
         }
 
-        return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
+        return result.OrderBy(c => c.Region).ThenBy(c => c.Center).ThenByDescending(c => c.Gender).ThenBy(c => c.FullName).ToList();
     }
 
     public async Task<GradeModel> AddOrUpdateForParticipantAndJudge(GradeUpdateModel updateModel)
