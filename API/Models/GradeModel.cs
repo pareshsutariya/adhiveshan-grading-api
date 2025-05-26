@@ -21,6 +21,7 @@ public class GradeModel : ModelBase
     public string Color { get; set; }
     public string SkillWithCategory => $"{Skill} : {Category}";
     public string JudgeName { get; set; }
+    public string JudgeBAPSId { get; set; }
 }
 
 public class GradeUpdateModel : ModelBase

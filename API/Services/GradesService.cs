@@ -117,8 +117,8 @@ public class GradesService : BaseService, IGradesService
             var topic = gradingCriteriaEntities.FirstOrDefault(c => c.GradingCriteriaId == item.GradingCriteriaId);
             if (topic != null)
             {
-                item.TopicName = topic.Name;
                 item.Sequence = topic.Sequence;
+                item.SectionName = topic.Section;
                 item.TopicName = topic.Name;
                 var skillCategory = skillCategoryEntities.FirstOrDefault(c => c.SkillCategoryId == topic.SkillCategoryId);
 
@@ -135,6 +135,7 @@ public class GradesService : BaseService, IGradesService
             item.Participant = participant?.Map<ParticipantModel>(mapper);
 
             item.JudgeName = judge?.FullName;
+            item.JudgeBAPSId = judge?.BAPSId;
         }
 
         return models.OrderBy(c => c.SkillWithCategory).ThenBy(c => c.Sequence).ThenBy(c => c.TopicName).ToList();
