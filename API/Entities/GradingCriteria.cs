@@ -4,6 +4,8 @@ public class GradingCriteria : MongoDBEntity
 {
     public int GradingCriteriaId { get; set; }
     public int SkillCategoryId { get; set; }
+
+    public string Section { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 

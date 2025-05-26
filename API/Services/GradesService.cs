@@ -68,6 +68,7 @@ public class GradesService : BaseService, IGradesService
                 BAPSId = bapsId,
                 GradingCriteriaId = topic.GradingCriteriaId,
                 // ----
+                SectionName = topic.Section,
                 TopicName = topic.Name,
                 Sequence = topic.Sequence,
                 MaximumMarks = topic.MaximumMarks,

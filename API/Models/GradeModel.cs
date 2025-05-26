@@ -10,6 +10,8 @@ public class GradeModel : ModelBase
 
     // ------------
     public ParticipantModel Participant { get; set; }
+
+    public string SectionName { get; set; }
     public string TopicName { get; set; }
     public int Sequence { get; set; }
     public decimal MaximumMarks { get; set; }
