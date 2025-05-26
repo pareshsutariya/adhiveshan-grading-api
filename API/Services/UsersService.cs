@@ -4,6 +4,7 @@ namespace AdhiveshanGrading.Services;
 
 public interface IUsersService
 {
+    Task<ParticipantModel> GetByBAPSIdToAddAsUser(string participantBapsId, string loginUserBapsId);
     Task<List<UserModel>> GetUsersForLoginUser(string loginUserBapsId);
     Task<UserModel> Get(int id);
     UserModel Create(UserCreateModel createModel);
@@ -17,12 +18,43 @@ public class UsersService : BaseService, IUsersService
     private readonly IMongoCollection<User> _UsersCollection;
     private readonly IMongoCollection<CompetitionEvent> _EventsCollection;
     private readonly IMongoCollection<Participant> _participantsCollection;
+    private readonly IMongoCollection<CompetitionEvent> _competitionEventsCollection;
 
     public UsersService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _UsersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
         _EventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
+        _competitionEventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
+    }
+
+    public async Task<ParticipantModel> GetByBAPSIdToAddAsUser(string participantBapsId, string loginUserBapsId)
+    {
+        var participant = await _participantsCollection.Find(item => item.BAPSId == participantBapsId).FirstOrDefaultAsync();
+        var loginUser = await _UsersCollection.Find(item => item.BAPSId == loginUserBapsId).FirstOrDefaultAsync();
+
+        var loginUserEvents = await _EventsCollection.Find(item => loginUser.AssignedEventIds.Contains(item.CompetitionEventId)).ToListAsync();
+
+        if (participant == null)
+            throw new ApplicationException($"Participant not found for BAPS Id: {participantBapsId}");
+
+        var existingUser = await _UsersCollection.Find(item => item.BAPSId == participant.BAPSId).FirstOrDefaultAsync();
+        if (existingUser != null)
+            throw new ApplicationException($"BAPS Id: {participantBapsId}. Participant {participant.FirstName} {participant.LastName}'s is already added as a User");
+
+        var events = await _competitionEventsCollection.Find(item => loginUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
+        if (!events.Any())
+            throw new ApplicationException($"Judge {loginUser.FullName}'s assigned Competition Events are Not Active. Hence cannot add user.");
+
+        var eventCenters = string.Join(", ", events.SelectMany(e => e.Centers));
+        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with judge's assigned events' center: {eventCenters}");
+
+        if (!loginUser.AssignedGenders.Contains(participant.Gender))
+            throw new ApplicationException($"BAPS Id: {participantBapsId}. Participant {participant.FirstName} {participant.LastName}'s gender ({participant.Gender}) is not matching with login user {loginUser.FullName}'s gender");
+
+
+        return participant?.Map<ParticipantModel>(mapper);
     }
 
     public async Task<List<UserModel>> GetUsersForLoginUser(string loginUserBapsId)

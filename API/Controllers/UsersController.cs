@@ -19,6 +19,10 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUsersForLoginUser(string loginUserBapsId)
         => Ok(ServiceResponse.Success(await _service.GetUsersForLoginUser(loginUserBapsId)));
 
+    [HttpGet("GetByBAPSIdToAddAsUser/{participantBapsId}/{loginUserBapsId}")]
+    public async Task<IActionResult> GetByBAPSIdToAddAsUser(string participantBapsId, string loginUserBapsId)
+        => Ok(ServiceResponse.Success(await _service.GetByBAPSIdToAddAsUser(participantBapsId, loginUserBapsId)));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
         => Ok(ServiceResponse.Success(await _service.Get(id)));
