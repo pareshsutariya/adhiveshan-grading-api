@@ -136,6 +136,7 @@ public class GradesService : BaseService, IGradesService
                 grade.Sequence = topic.Sequence;
                 grade.SectionName = topic.Section;
                 grade.TopicName = topic.Name;
+                grade.MaximumMarks = topic.MaximumMarks;
                 var skillCategory = skillCategoryEntities.FirstOrDefault(c => c.SkillCategoryId == topic.SkillCategoryId);
 
                 if (skillCategory != null)
