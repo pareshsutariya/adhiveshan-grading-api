@@ -115,7 +115,9 @@ public class ParticipantsService : BaseService, IParticipantsService
         var entities = await _participantsCollection.Find(item => (region == "" || item.Region == region) && (center == "" || item.Center == center) && (mandal == "" || item.Mandal == mandal)).ToListAsync();
 
         var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
-                            .OrderBy(c => c.Gender)
+                            .OrderByDescending(c => c.Gender)
+                            .ThenBy(c => c.Region)
+                            .ThenBy(c => c.Center)
                             .ThenBy(c => c.FullName).ToList();
 
         return models;
