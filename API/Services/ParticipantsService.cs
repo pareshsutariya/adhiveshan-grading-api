@@ -63,6 +63,9 @@ public class ParticipantsService : BaseService, IParticipantsService
         if (judgeUser == null)
             throw new ApplicationException($"Judge not found");
 
+        if (judgeUser.BAPSId == bapsId)
+            throw new ApplicationException($"Judges are not allowed to grade themselves");
+
         // Judge Events
         if (!judgeUser.AssignedEventIds.Any())
             throw new ApplicationException($"Judge {judgeUser.FullName} is not assigned any Competition Event");
