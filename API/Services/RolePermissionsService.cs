@@ -23,6 +23,7 @@ public static class RolePermissionsService
     public const string Grading_Questions_Update = "Grading Questions: Update";
 
     public const string Skill_Categories_View = "Skill Categories: View";
+    public const string Regions_Centers_View = "Regions And Centers: View";
 
     public const string Participants_View = "Participants: View";
     public const string Participants_Import = "Participants: Import";
@@ -56,6 +57,8 @@ public static class RolePermissionsService
             {
                 Participants_View,
                 Participants_Import,
+                Regions_Centers_View,
+                Skill_Categories_View,
 
                 Skill_Categories_View,
 
@@ -100,7 +103,6 @@ public static class RolePermissionsService
             Permissions = new List<string>
             {
                 Participants_View,
-                Skill_Categories_View,
 
                 Grading_Questions_View,
 
