@@ -5,6 +5,7 @@ namespace AdhiveshanGrading.Services;
 public interface IParticipantsService
 {
     Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "");
+    Task<List<ParticipantModel>> GetParticipantsForLoginUser(string loginUserBapsId);
     Task<ParticipantModel> GetByMISId(int misId);
     Task<ParticipantModel> GetByBAPSId(string bapsId);
     Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender);
@@ -116,6 +117,43 @@ public class ParticipantsService : BaseService, IParticipantsService
     public async Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "")
     {
         var entities = await _participantsCollection.Find(item => (region == "" || item.Region == region) && (center == "" || item.Center == center) && (mandal == "" || item.Mandal == mandal)).ToListAsync();
+
+        var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
+                            .OrderByDescending(c => c.Gender)
+                            .ThenBy(c => c.Region)
+                            .ThenBy(c => c.Center)
+                            .ThenBy(c => c.FullName).ToList();
+
+        return models;
+    }
+
+    public async Task<List<ParticipantModel>> GetParticipantsForLoginUser(string loginUserBapsId)
+    {
+        var loginUser = await _usersCollection.Find(item => item.BAPSId == loginUserBapsId).FirstOrDefaultAsync();
+
+        if (loginUser == null)
+            throw new ApplicationException($"User not found for the given BAPS Id: {loginUserBapsId}");
+
+        if (!loginUser.AssignedRoles.Any())
+            throw new ApplicationException($"No any role assigned to login user {loginUser.FullName}");
+
+        var isNationalAdmin = loginUser.AssignedRoles.Contains("National Admin");
+
+        var centers = new List<string>();
+
+        if (!isNationalAdmin)
+        {
+            var events = await _competitionEventsCollection.Find(item => loginUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
+
+            if (!events.Any())
+                throw new ApplicationException($"No any event assigned to user");
+
+            centers = events.SelectMany(c => c.Centers).ToList();
+            if (!centers.Any())
+                throw new ApplicationException($"No any event center assigned to user");
+        }
+
+        var entities = await _participantsCollection.Find(item => isNationalAdmin || centers.Contains(item.Center) || centers.Contains(item.HostCenter)).ToListAsync();
 
         var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
                             .OrderByDescending(c => c.Gender)

@@ -16,6 +16,10 @@ public class ParticipantsController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] string? center = "", [FromQuery] string? mandal = "")
         => Ok(ServiceResponse.Success(await _service.Get(center, mandal)));
 
+    [HttpGet("GetParticipantsForLoginUser/{loginUserBapsId}")]
+    public async Task<IActionResult> GetParticipantsForLoginUser(string loginUserBapsId)
+        => Ok(ServiceResponse.Success(await _service.GetParticipantsForLoginUser(loginUserBapsId)));
+
     [HttpGet("getByMISId/{misId}")]
     public async Task<IActionResult> GetByMISId(int misId)
         => Ok(ServiceResponse.Success(await _service.GetByMISId(misId)));
