@@ -153,7 +153,10 @@ public class ParticipantsService : BaseService, IParticipantsService
                 throw new ApplicationException($"No any event center assigned to user");
         }
 
-        var entities = await _participantsCollection.Find(item => isNationalAdmin || centers.Contains(item.Center) || centers.Contains(item.HostCenter)).ToListAsync();
+        var entities = await _participantsCollection.Find(item =>
+                        (isNationalAdmin || centers.Contains(item.Center) || centers.Contains(item.HostCenter))
+                        && loginUser.AssignedGenders.Contains(item.Gender)
+                        ).ToListAsync();
 
         var models = entities.Select(c => c.Map<ParticipantModel>(mapper))
                             .OrderByDescending(c => c.Gender)
