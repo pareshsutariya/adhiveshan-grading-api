@@ -130,7 +130,6 @@ public static class RolePermissionsService
             Color = "Chocolate",
             Permissions = new List<string>
             {
-                Skill_Categories_View,
                 Grading_Participants_Search_Participants,
                 Grading_Participants_Grade_Participants,
                 Grading_Participants_View_Participants_Grade
