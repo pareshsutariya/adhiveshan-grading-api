@@ -14,4 +14,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(AuthRequestModel loginRequestModel)
         => Ok(ServiceResponse.Success(await _service.Authenticate(loginRequestModel)));
+
+    [HttpPost("login-adhivehshan-portal")]
+    public async Task<IActionResult> LoginAdhiveshanPortal(AuthRequestModel loginRequestModel)
+        => Ok(ServiceResponse.Success(await _service.Authenticate(loginRequestModel, true)));
 }

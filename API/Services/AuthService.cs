@@ -10,7 +10,7 @@ namespace AdhiveshanGrading.Services;
 
 public interface IAuthService
 {
-    Task<AuthResponseModel> Authenticate(AuthRequestModel request);
+    Task<AuthResponseModel> Authenticate(AuthRequestModel request, bool adhivehshanPortalLogin = false);
 }
 
 public class AuthService : BaseService, IAuthService
@@ -27,9 +27,11 @@ public class AuthService : BaseService, IAuthService
         this.configuration = configuration;
     }
 
-    public async Task<AuthResponseModel> Authenticate(AuthRequestModel request)
+    public async Task<AuthResponseModel> Authenticate(AuthRequestModel request, bool adhivehshanPortalLogin = false)
     {
-        var userModel = (await _UsersCollection.Find(item => item.BAPSId.ToLower() == request.UserName.ToLower() && item.Password == request.Password)
+        var userModel = (await _UsersCollection.Find(item =>
+                                                item.BAPSId.ToLower() == request.UserName.ToLower() &&
+                                                (adhivehshanPortalLogin || item.Password == request.Password))
                                                .FirstOrDefaultAsync()
                         )?.Map<UserModel>(mapper);
 
