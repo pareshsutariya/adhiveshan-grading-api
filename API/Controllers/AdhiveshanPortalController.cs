@@ -13,4 +13,8 @@ public class AdhiveshanPortalController : ControllerBase
     [HttpGet("GetUserForBapsId/{bapsId}")]
     public async Task<IActionResult> GetUserForBapsId(string bapsId)
         => Ok(ServiceResponse.Success(await _service.GetUserForBapsId(bapsId)));
+
+    [HttpGet("GetParticipantStatus/{bapsId}")]
+    public async Task<IActionResult> GetParticipantStatus(string bapsId)
+        => Ok(ServiceResponse.Success(await _service.GetParticipantStatus(bapsId)));
 }
