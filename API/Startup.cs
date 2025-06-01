@@ -65,6 +65,7 @@ public class Startup
         services.AddSingleton<IGradingCriteriasService, GradingCriteriasService>();
         services.AddSingleton<IGradesService, GradesService>();
         services.AddSingleton<IAdhiveshanPortalService, AdhiveshanPortalService>();
+        services.AddSingleton<IEventCheckInService, EventCheckInService>();
         services.AddSingleton<ConfigurationsService>();
         #endregion
 
