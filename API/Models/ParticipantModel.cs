@@ -33,4 +33,6 @@ public class ParticipantModel : ModelBase
     // public string Vyaktigat_Kirtan_Gaan_Category { get; set; }
 
     public string FullName => $"{FirstName} {MiddleName} {LastName}";
+    public DateTime? CheckInAtUtc { get; set; }
+    public int? CheckedInByUserId { get; set; }
 }

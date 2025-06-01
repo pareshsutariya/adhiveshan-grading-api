@@ -14,5 +14,5 @@ public class EventCheckInController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CheckIn(EventCheckInCreateModel model)
-        => Ok(ServiceResponse.Success(_service.CheckIn(model)));
+        => Ok(ServiceResponse.Success(await _service.CheckIn(model)));
 }

@@ -20,12 +20,14 @@ public class ParticipantsService : BaseService, IParticipantsService
     private readonly IMongoCollection<Participant> _participantsCollection;
     private readonly IMongoCollection<User> _usersCollection;
     private readonly IMongoCollection<CompetitionEvent> _competitionEventsCollection;
+    private readonly IMongoCollection<EventCheckIn> _EventCheckInCollection;
 
     public ParticipantsService(IAdvGradingSettings settings, IMapper mapper, IWebHostEnvironment hostingEnvironment) : base(settings, mapper, hostingEnvironment)
     {
         _participantsCollection = Database.GetCollection<Participant>(settings.ParticipantsCollectionName);
         _competitionEventsCollection = Database.GetCollection<CompetitionEvent>(settings.CompetitionEventsCollectionName);
         _usersCollection = Database.GetCollection<User>(settings.UsersCollectionName);
+        _EventCheckInCollection = Database.GetCollection<EventCheckIn>(settings.EventCheckInCollectionName);
     }
 
     public async Task<ParticipantModel> GetByMISId(int misId)
@@ -153,7 +155,18 @@ public class ParticipantsService : BaseService, IParticipantsService
         if (!evt.Centers.Contains(participant.Center) && !evt.Centers.Contains(participant.HostCenter ?? ""))
             throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with selected events' center: {eventCenters}");
 
-        return participant?.Map<ParticipantModel>(mapper);
+
+        var model = participant?.Map<ParticipantModel>(mapper);
+
+        // Check if participant is already checked in
+        var checkInExists = await _EventCheckInCollection.Find(e => e.EventId == eventId && e.ParticipantBAPSId == bapsId).FirstOrDefaultAsync();
+        if (checkInExists != null)
+        {
+            model.CheckInAtUtc = checkInExists.CheckedInAtUtc;
+            model.CheckedInByUserId = checkInExists.CheckedInByUserId;
+        }
+
+        return model;
     }
 
     public async Task<List<ParticipantModel>> Get(string region = "", string center = "", string mandal = "")
