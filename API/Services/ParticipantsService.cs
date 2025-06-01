@@ -10,7 +10,7 @@ public interface IParticipantsService
     Task<ParticipantModel> GetByBAPSId(string bapsId);
     Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender);
     Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
-    Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int loginUserId);
+    Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int eventId, int loginUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
@@ -115,7 +115,7 @@ public class ParticipantsService : BaseService, IParticipantsService
         return participant?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int loginUserId)
+    public async Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int eventId, int loginUserId)
     {
         // Get User
         var checkInUser = await _usersCollection.Find(item => item.UserId == loginUserId).FirstOrDefaultAsync();
@@ -148,9 +148,10 @@ public class ParticipantsService : BaseService, IParticipantsService
             throw new ApplicationException($"User {checkInUser.FullName} is not now allowed to do check in for {participant.Gender} gender");
 
         // Event Center vs Participant Center or HostCenter
-        var eventCenters = string.Join(", ", events.SelectMany(e => e.Centers));
-        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
-            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with Check In user's assigned events' center: {eventCenters}");
+        var evt = events.FirstOrDefault(e => e.CompetitionEventId == eventId);
+        var eventCenters = string.Join(", ", evt.Centers);
+        if (!evt.Centers.Contains(participant.Center) && !evt.Centers.Contains(participant.HostCenter ?? ""))
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with selected events' center: {eventCenters}");
 
         return participant?.Map<ParticipantModel>(mapper);
     }
