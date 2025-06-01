@@ -19,6 +19,8 @@ public class AutoMapperProfile : Profile
         _ = CreateMap<Grade, GradeModel>().ReverseMap();
         _ = CreateMap<Grade, GradeUpdateModel>().ReverseMap();
 
+        _ = CreateMap<EventCheckIn, EventCheckInModel>().ReverseMap();
+
         _ = CreateMap<CompetitionEvent, CompetitionEventModel>().ReverseMap();
         _ = CreateMap<CompetitionEvent, CompetitionEventCreateModel>().ReverseMap();
         _ = CreateMap<CompetitionEvent, CompetitionEventUpdateModel>().ReverseMap();

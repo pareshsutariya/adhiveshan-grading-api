@@ -61,7 +61,6 @@ public class CompetitionEventsService : BaseService, ICompetitionEventsService
         return models;
     }
 
-
     public async Task<CompetitionEventModel> Get(int id)
     {
         var entity = await _CompetitionEventsCollection.Find<CompetitionEvent>(item => item.CompetitionEventId == id).FirstOrDefaultAsync();

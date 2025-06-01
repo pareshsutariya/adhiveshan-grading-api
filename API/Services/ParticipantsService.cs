@@ -10,6 +10,7 @@ public interface IParticipantsService
     Task<ParticipantModel> GetByBAPSId(string bapsId);
     Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender);
     Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
+    Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int checkInUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
@@ -45,7 +46,7 @@ public class ParticipantsService : BaseService, IParticipantsService
     {
         var compEvent = await _competitionEventsCollection.Find(item => item.CompetitionEventId == eventId).FirstOrDefaultAsync();
         if (compEvent == null)
-            throw new ApplicationException($"Competition Event not foud for the given eventId: {compEvent}");
+            throw new ApplicationException($"Competition Event not foud for the given eventId: {eventId}");
 
         var participants = await _participantsCollection.Find(item => item.Gender == gender &&
                                                         (item.Speech_Pravachan_Category != null ||
@@ -110,6 +111,46 @@ public class ParticipantsService : BaseService, IParticipantsService
 
         if (judgeSkillsMatchedWithParticipantSkills == false)
             throw new ApplicationException($"Judge {judgeUser.FullName} assigned skills for judging are not matching with '{participant.FirstName} {participant.LastName}'s skills");
+
+        return participant?.Map<ParticipantModel>(mapper);
+    }
+
+    public async Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int checkInUserId)
+    {
+        // Get User
+        var checkInUser = await _usersCollection.Find(item => item.UserId == checkInUserId).FirstOrDefaultAsync();
+        if (checkInUser == null)
+            throw new ApplicationException($"Check In User not found");
+
+        if (checkInUser.BAPSId == bapsId)
+            throw new ApplicationException($"User is not allowed to check in themselves");
+
+        // User Events
+        if (!checkInUser.AssignedEventIds.Any())
+            throw new ApplicationException($"User {checkInUser.FullName} is not assigned any Competition Event");
+
+        // User Roles
+        if (!checkInUser.AssignedRoles.Any(role => role == "Check In"))
+            throw new ApplicationException($"User {checkInUser.FullName} is not assigned 'Check In' role");
+
+        // Active Events
+        var events = await _competitionEventsCollection.Find(item => checkInUser.AssignedEventIds.Contains(item.CompetitionEventId) && item.Status == "Active").ToListAsync();
+        if (!events.Any())
+            throw new ApplicationException($"User {checkInUser.FullName}'s assigned Competition Events are Not Active");
+
+        // Get participant by MIS Id
+        var participant = await _participantsCollection.Find(item => item.BAPSId == bapsId).FirstOrDefaultAsync();
+        if (participant == null)
+            throw new ApplicationException($"Participant not found for the given BAPS Id: {bapsId}");
+
+        // User assigned Genders
+        if (!checkInUser.AssignedGenders.Contains(participant.Gender))
+            throw new ApplicationException($"User {checkInUser.FullName} is not now allowed to do check in for {participant.Gender} gender");
+
+        // Event Center vs Participant Center or HostCenter
+        var eventCenters = string.Join(", ", events.SelectMany(e => e.Centers));
+        if (!events.SelectMany(e => e.Centers).Contains(participant.Center) && !events.SelectMany(e => e.Centers).Contains(participant.HostCenter ?? ""))
+            throw new ApplicationException($"Participant '{participant.FirstName} {participant.LastName}' Center ({participant.Center}) OR asigned Host Center({participant.HostCenter ?? ""}) is not matching with Check In user's assigned events' center: {eventCenters}");
 
         return participant?.Map<ParticipantModel>(mapper);
     }
