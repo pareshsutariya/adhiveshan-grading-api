@@ -25,6 +25,11 @@ public class EventCheckInService : BaseService, IEventCheckInService
     // Adds a check-in record for the given event, bapsId, and loginUserId
     public async Task<EventCheckIn> CheckIn(EventCheckInCreateModel model)
     {
+        // Validate the event exists
+        var checkInExists = await _EventCheckInCollection.Find(e => e.EventId == model.EventId && e.ParticipantBAPSId == model.ParticipantBAPSId).AnyAsync();
+        if (checkInExists)
+            throw new ApplicationException("Participant already checked in for this event.");
+
         var maxId = _EventCheckInCollection.Find(c => true).SortByDescending(c => c.EventCheckInId).FirstOrDefault()?.EventCheckInId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
