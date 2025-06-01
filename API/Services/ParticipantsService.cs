@@ -10,7 +10,7 @@ public interface IParticipantsService
     Task<ParticipantModel> GetByBAPSId(string bapsId);
     Task<List<ParticipantModel>> GetParticipantsForEvent(int eventId, string gender);
     Task<ParticipantModel> GetParticipantForJudging(string bapsId, int judgeUserId);
-    Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int checkInUserId);
+    Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int loginUserId);
     Task<ParticipantModel> UpdateHostCenter(ParticipantUpdateHostCenterModel model);
     Task<List<ParticipantModel>> Import(List<ParticipantModel> models);
 }
@@ -115,10 +115,10 @@ public class ParticipantsService : BaseService, IParticipantsService
         return participant?.Map<ParticipantModel>(mapper);
     }
 
-    public async Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int checkInUserId)
+    public async Task<ParticipantModel> GetParticipantForCheckIn(string bapsId, int loginUserId)
     {
         // Get User
-        var checkInUser = await _usersCollection.Find(item => item.UserId == checkInUserId).FirstOrDefaultAsync();
+        var checkInUser = await _usersCollection.Find(item => item.UserId == loginUserId).FirstOrDefaultAsync();
         if (checkInUser == null)
             throw new ApplicationException($"Check In User not found");
 

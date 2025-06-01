@@ -101,7 +101,7 @@ public class GradingCriteriasService : BaseService, IGradingCriteriasService
 
     public GradingCriteriaModel Create(GradingCriteriaCreateModel createModel)
     {
-        var maxId = _GradingCriteriasCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.GradingCriteriaId;
+        var maxId = _GradingCriteriasCollection.Find(c => true).SortByDescending(c => c.GradingCriteriaId).FirstOrDefault()?.GradingCriteriaId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
         var entity = createModel.Map<GradingCriteria>(mapper);

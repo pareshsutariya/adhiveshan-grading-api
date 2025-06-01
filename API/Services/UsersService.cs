@@ -105,7 +105,7 @@ public class UsersService : BaseService, IUsersService
 
     public UserModel Create(UserCreateModel createModel)
     {
-        var maxId = _UsersCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.UserId;
+        var maxId = _UsersCollection.Find(c => true).SortByDescending(c => c.UserId).FirstOrDefault()?.UserId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
         var entity = createModel.Map<User>(mapper);

@@ -182,7 +182,7 @@ public class GradesService : BaseService, IGradesService
 
         if (entity == null)
         {
-            var maxId = _GradesCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.GradeId;
+            var maxId = _GradesCollection.Find(c => true).SortByDescending(c => c.GradeId).FirstOrDefault()?.GradeId;
             maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
             entity = new Grade

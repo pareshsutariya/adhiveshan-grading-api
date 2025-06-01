@@ -72,7 +72,7 @@ public class CompetitionEventsService : BaseService, ICompetitionEventsService
 
     public CompetitionEventModel Create(CompetitionEventCreateModel createModel)
     {
-        var maxId = _CompetitionEventsCollection.Find(c => true).SortByDescending(c => c.Id).FirstOrDefault()?.CompetitionEventId;
+        var maxId = _CompetitionEventsCollection.Find(c => true).SortByDescending(c => c.CompetitionEventId).FirstOrDefault()?.CompetitionEventId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
         var entity = createModel.Map<CompetitionEvent>(mapper);

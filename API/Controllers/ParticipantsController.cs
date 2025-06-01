@@ -36,6 +36,10 @@ public class ParticipantsController : ControllerBase
     public async Task<IActionResult> GetParticipantForJudging(string bapsId, int judgeUserId)
         => Ok(ServiceResponse.Success(await _service.GetParticipantForJudging(bapsId, judgeUserId)));
 
+    [HttpGet("GetParticipantForCheckIn/{bapsId}/{loginUserId}")]
+    public async Task<IActionResult> GetParticipantForCheckIn(string bapsId, int loginUserId)
+        => Ok(ServiceResponse.Success(await _service.GetParticipantForCheckIn(bapsId, loginUserId)));
+
     [HttpPost("updateHostCenter")]
     public async Task<IActionResult> UpdateHostCenter(ParticipantUpdateHostCenterModel model)
         => Ok(ServiceResponse.Success(await _service.UpdateHostCenter(model)));
