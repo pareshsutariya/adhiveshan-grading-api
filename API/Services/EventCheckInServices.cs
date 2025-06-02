@@ -5,6 +5,7 @@ namespace AdhiveshanGrading.Services;
 public interface IEventCheckInService
 {
     Task<EventCheckIn> CheckIn(EventCheckInCreateModel model);
+    Task<List<ParticipantModel>> GetCheckedInParticipants(int eventId);
 }
 
 public class EventCheckInService : BaseService, IEventCheckInService
@@ -44,5 +45,31 @@ public class EventCheckInService : BaseService, IEventCheckInService
 
         await _EventCheckInCollection.InsertOneAsync(checkIn);
         return checkIn;
+    }
+
+    public async Task<List<ParticipantModel>> GetCheckedInParticipants(int eventId)
+    {
+        // Fetch the check-ins for the event
+        var checkIns = await _EventCheckInCollection.Find(e => e.EventId == eventId).ToListAsync();
+
+        // Fetch participants based on the check-ins
+        var participantBapsIds = checkIns.Select(c => c.ParticipantBAPSId).ToList();
+        var participants = await _ParticipantsCollection.Find(p => participantBapsIds.Contains(p.BAPSId)).ToListAsync();
+
+        // Map to ParticipantModel
+        var participantModels = participants.Select(c => c.Map<ParticipantModel>(mapper)).ToList();
+
+        // Set CheckInAtUtc and CheckedInByUserId for each participant
+        foreach (var participant in participantModels)
+        {
+            var checkIn = checkIns.FirstOrDefault(c => c.ParticipantBAPSId == participant.BAPSId);
+            if (checkIn != null)
+            {
+                participant.CheckInAtUtc = checkIn.CheckedInAtUtc;
+                participant.CheckedInByUserId = checkIn.CheckedInByUserId;
+            }
+        }
+
+        return participantModels;
     }
 }

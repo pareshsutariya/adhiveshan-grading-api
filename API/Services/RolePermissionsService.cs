@@ -156,6 +156,7 @@ public static class RolePermissionsService
             {
                 CheckIn_View,
                 CheckIn_Update,
+                Reports_Check_In_Report
             }
         };
 
