@@ -11,4 +11,5 @@ public class EventCheckIn : MongoDBEntity
     public DateTime? CheckedInAtUtc { get; set; }
 
     public int CheckedInByUserId { get; set; }
+    public string CheckedInByBAPSId { get; set; }
 }

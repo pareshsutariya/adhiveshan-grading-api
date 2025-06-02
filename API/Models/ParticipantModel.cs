@@ -35,4 +35,5 @@ public class ParticipantModel : ModelBase
     public string FullName => $"{FirstName} {MiddleName} {LastName}";
     public DateTime? CheckInAtUtc { get; set; }
     public int? CheckedInByUserId { get; set; }
+    public string CheckedInByBAPSId { get; set; }
 }

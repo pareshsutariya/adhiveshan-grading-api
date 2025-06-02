@@ -34,12 +34,15 @@ public class EventCheckInService : BaseService, IEventCheckInService
         var maxId = _EventCheckInCollection.Find(c => true).SortByDescending(c => c.EventCheckInId).FirstOrDefault()?.EventCheckInId;
         maxId = maxId.HasValue == false ? 0 : maxId.Value;
 
+        var loginUser = await _UsersCollection.Find(u => u.UserId == model.LoginUserId).FirstOrDefaultAsync();
+
         var checkIn = new EventCheckIn
         {
             EventCheckInId = (maxId.Value + 1),
             EventId = model.EventId,
             ParticipantBAPSId = model.ParticipantBAPSId,
             CheckedInByUserId = model.LoginUserId,
+            CheckedInByBAPSId = loginUser.BAPSId,
             CheckedInAtUtc = DateTime.UtcNow
         };
 
@@ -67,6 +70,7 @@ public class EventCheckInService : BaseService, IEventCheckInService
             {
                 participant.CheckInAtUtc = checkIn.CheckedInAtUtc;
                 participant.CheckedInByUserId = checkIn.CheckedInByUserId;
+                participant.CheckedInByBAPSId = checkIn.CheckedInByBAPSId;
             }
         }
 
